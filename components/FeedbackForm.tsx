@@ -282,17 +282,13 @@ const FeedbackForm: React.FC = () => {
       case 0:
         return (
           <div className="text-center space-y-8 py-8 animate-fadeIn">
-            <div className="flex justify-center">
-              <div className="section-badge text-xs tracking-widest animate-glowPulse">
-                DXN SOUTH ASIA REGIONAL MANUFACTURING SUMMIT 2026
-              </div>
-            </div>
+
 
 
 
             <div className="space-y-4">
               <h1 className="font-display text-5xl md:text-7xl font-bold leading-none tracking-tight animate-fadeUp">
-                <span style={{ color: '#f5f0e8' }}>South Asia Regional Manufacturing Summit</span>
+                <span style={{ color: '#f5f0e8' }}>South Asia Regional Manufacturing Summit - 2026</span>
               </h1>
               <h2 className="font-display text-4xl md:text-6xl italic font-semibold gold-text glow-gold animate-fadeIn">
                 Executive Feedback Portal
@@ -509,13 +505,7 @@ const FeedbackForm: React.FC = () => {
     <div className="aurora-bg min-h-full">
       <div className="min-h-screen py-10 px-4 md:px-8 w-full flex items-start justify-center">
         <div className="max-w-3xl w-full mx-auto space-y-6">
-          {step === 0 && (
-            <div className="text-center pt-2">
-              <p className="text-xs tracking-[0.3em] uppercase text-silver/80 font-semibold drop-shadow-sm">
-                DXN International · South Asia Regional Manufacturing Summit · 2026
-              </p>
-            </div>
-          )}
+
 
           {step > 0 && <StepIndicator currentStep={step} />}
 
