@@ -4,6 +4,7 @@ import { GuestInfo, FeedbackData } from '../types';
 import {
   REGISTRATION_ASPECTS,
   ACCOMMODATION_ASPECTS,
+  ROOM_NO_ASPECTS,
   GALA_DINNER_ASPECTS,
   CULTURAL_PROGRAM_ASPECTS,
   EVENT_MANAGEMENT_ASPECTS,
@@ -12,6 +13,7 @@ import {
   TRANSPORTATION_ASPECTS,
   HOUSEKEEPING_ASPECTS,
   FOOD_ASPECTS,
+  PRODUCTS_ASPECTS,
 } from '../constants';
 
 // ── Section icons ──────────────────────────────────────────────────────────
@@ -233,10 +235,36 @@ const FeedbackForm: React.FC = () => {
 
   const handleSubmit = async () => {
     // Validate required fields
+    const requiredSections = [
+      'registrationReception',
+      'accommodation',
+      'roomNo',
+      'galaDinner',
+      'culturalProgram',
+      'eventManagement',
+      'factoryVisit',
+      'venue',
+      'transportation',
+      'HouseKeeping',
+      'Food',
+      'products'
+    ];
+
+    for (let i = 0; i < requiredSections.length; i++) {
+      const key = requiredSections[i];
+      if (!ratings[key] || Object.keys(ratings[key]).length === 0) {
+        setError(`Please provide a rating for ${sectionMeta[key].label}.`);
+        if (sectionRefs.current[i]) {
+          sectionRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+    }
+
     if (overallExperience === 0) {
       setError('Please rate your overall experience before submitting.');
-      if (sectionRefs.current[8]) {
-        sectionRefs.current[8].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (sectionRefs.current[12]) {
+        sectionRefs.current[12]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       return;
     }
@@ -387,6 +415,7 @@ const FeedbackForm: React.FC = () => {
         const sections = [
           { key: 'registrationReception', aspects: REGISTRATION_ASPECTS },
           { key: 'accommodation', aspects: ACCOMMODATION_ASPECTS },
+          { key: 'roomNo', aspects: ROOM_NO_ASPECTS },
           { key: 'galaDinner', aspects: GALA_DINNER_ASPECTS },
           { key: 'culturalProgram', aspects: CULTURAL_PROGRAM_ASPECTS },
           { key: 'eventManagement', aspects: EVENT_MANAGEMENT_ASPECTS },
@@ -395,6 +424,7 @@ const FeedbackForm: React.FC = () => {
           { key: 'transportation', aspects: TRANSPORTATION_ASPECTS },
           { key: 'HouseKeeping', aspects: HOUSEKEEPING_ASPECTS },
           { key: 'Food', aspects: FOOD_ASPECTS },
+          { key: 'products', aspects: PRODUCTS_ASPECTS },
         ];
 
         return (
@@ -438,7 +468,7 @@ const FeedbackForm: React.FC = () => {
 
             {/* Overall Experience & Final Thoughts */}
             <div
-              ref={el => { sectionRefs.current[8] = el; }}
+              ref={el => { sectionRefs.current[12] = el; }}
               className="mt-12 pt-8 border-t border-gold/20 space-y-8 opacity-0 animate-fadeIn"
               style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}
             >
