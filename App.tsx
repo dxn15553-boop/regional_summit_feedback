@@ -11,7 +11,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean; onLogout: () => void }> = ({ isLo
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 md:relative md:w-64 md:h-screen flex md:flex-col z-[100] flex-shrink-0"
+      className="fixed bottom-0 left-0 right-0 md:sticky md:top-0 md:w-64 md:h-screen flex md:flex-col z-[100] flex-shrink-0"
       style={{
         background: 'linear-gradient(180deg, #060915 0%, #0d1526 100%)',
         borderRight: '1px solid rgba(212,175,55,0.12)',
