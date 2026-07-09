@@ -26,6 +26,8 @@ const sectionMeta: Record<string, { icon: string; color: string; label: string }
   transportation: { icon: '🚌', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Transportation' },
   HouseKeeping: { icon: '🛏️', color: 'from-cyan-900/30 to-midnight-900/60', label: 'HouseKeeping' },
   Food: { icon: '🍛', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Food' },
+  roomNo: { icon: '🚪', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Room No' },
+  products: { icon: '🛍️', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Products' },
 };
 
 const STAR_LABELS = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
@@ -248,6 +250,7 @@ const FeedbackForm: React.FC = () => {
       guestInfo,
       registrationReception: ratings.registrationReception,
       accommodation: ratings.accommodation,
+      roomNo: ratings.roomNo,
       galaDinner: ratings.galaDinner,
       culturalProgram: ratings.culturalProgram,
       eventManagement: ratings.eventManagement,
@@ -256,6 +259,7 @@ const FeedbackForm: React.FC = () => {
       transportation: ratings.transportation,
       HouseKeeping: ratings.HouseKeeping,
       Food: ratings.Food,
+      products: ratings.products,
       overallExperience,
       suggestions,
       recommendToOthers,

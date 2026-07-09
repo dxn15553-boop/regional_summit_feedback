@@ -21,6 +21,8 @@ export interface FeedbackData {
   transportation: Record<string, number>;
   HouseKeeping: Record<string, number>;
   Food: Record<string, number>;
+  roomNo: Record<string, number>;
+  products: Record<string, number>;
   overallExperience: number;
   suggestions: string;
   recommendToOthers: boolean;

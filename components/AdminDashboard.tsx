@@ -141,6 +141,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ feedback, onClose, isAdmi
                 {[
                   { label: 'Registration & Reception', emoji: '🏷️', data: feedback.registrationReception },
                   { label: 'Accommodation', emoji: '🏨', data: feedback.accommodation },
+                  { label: 'Room No', emoji: '🚪', data: feedback.roomNo },
                   { label: 'Gala Dinner', emoji: '🍽️', data: feedback.galaDinner },
                   { label: 'Cultural Program', emoji: '🎭', data: feedback.culturalProgram },
                   { label: 'Event Management', emoji: '📋', data: feedback.eventManagement },
@@ -149,6 +150,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ feedback, onClose, isAdmi
                   { label: 'Transportation', emoji: '🚌', data: feedback.transportation },
                   { label: 'HouseKeeping', emoji: '🛏️', data: feedback.HouseKeeping },
                   { label: 'Food', emoji: '🍛', data: feedback.Food },
+                  { label: 'Products', emoji: '🛍️', data: feedback.products }
                 ].map(cat => {
                   const rating = cat.data ? Object.values(cat.data)[0] : 0;
                   return (
