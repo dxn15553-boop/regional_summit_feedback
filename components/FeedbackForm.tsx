@@ -288,7 +288,7 @@ const FeedbackForm: React.FC = () => {
 
             <div className="space-y-4">
               <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight animate-fadeUp max-w-4xl mx-auto px-4">
-                <span style={{ color: '#f5f0e8' }}>South Asia Regional<br className="hidden md:block" /> Manufacturing Summit - 2026</span>
+                <span style={{ color: '#f5f0e8' }}>South Asia Regional<br className="hidden md:block" /> Manufacturing Summit  2026</span>
               </h1>
               <h2 className="font-display text-2xl sm:text-3xl md:text-5xl italic font-semibold gold-text glow-gold animate-fadeIn px-4">
                 Executive Feedback Portal
@@ -304,10 +304,10 @@ const FeedbackForm: React.FC = () => {
             <div className="animate-fadeUp">
               <button
                 onClick={() => handleNext(false)}
-                className="btn-gold px-10 py-4 rounded-full text-base tracking-widest uppercase flex items-center gap-3 mx-auto"
+                className="btn-gold px-8 py-3 rounded-full text-sm tracking-widest uppercase flex items-center gap-2 mx-auto"
               >
                 Begin Feedback
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
               </button>
