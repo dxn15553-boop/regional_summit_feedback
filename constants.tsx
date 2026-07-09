@@ -21,6 +21,8 @@ export const EVENT_MANAGEMENT_ASPECTS = ['Overall Experience'];
 export const FACTORY_VISIT_ASPECTS = ['Overall Experience'];
 export const VENUE_ASPECTS = ['Overall Experience'];
 export const TRANSPORTATION_ASPECTS = ['Overall Experience'];
+export const HOUSEKEEPING_ASPECTS = ['Overall Experience'];
+export const FOOD_ASPECTS = ['Overall Experience'];
 
 export const RATING_OPTIONS = [
   { label: 'Excellent', value: 5 },

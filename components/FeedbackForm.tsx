@@ -10,6 +10,8 @@ import {
   FACTORY_VISIT_ASPECTS,
   VENUE_ASPECTS,
   TRANSPORTATION_ASPECTS,
+  HOUSEKEEPING_ASPECTS,
+  FOOD_ASPECTS,
 } from '../constants';
 
 // ── Section icons ──────────────────────────────────────────────────────────
@@ -22,6 +24,8 @@ const sectionMeta: Record<string, { icon: string; color: string; label: string }
   factoryVisit: { icon: '🏭', color: 'from-emerald-900/30 to-midnight-900/60', label: 'Factory Visit' },
   venue: { icon: '🏛️', color: 'from-rose-900/30 to-midnight-900/60', label: 'Venue' },
   transportation: { icon: '🚌', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Transportation' },
+  HouseKeeping: { icon: '🛏️', color: 'from-cyan-900/30 to-midnight-900/60', label: 'HouseKeeping' },
+  Food: { icon: '🍛', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Food' },
 };
 
 const STAR_LABELS = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
@@ -176,7 +180,9 @@ const FeedbackForm: React.FC = () => {
     eventManagement: {},
     factoryVisit: {},
     venue: {},
-    transportation: {}
+    transportation: {},
+    HouseKeeping: {},
+    Food: {}
   });
   const [overallExperience, setOverallExperience] = useState<number>(0);
   const [suggestions, setSuggestions] = useState('');
@@ -248,6 +254,8 @@ const FeedbackForm: React.FC = () => {
       factoryVisit: ratings.factoryVisit,
       venue: ratings.venue,
       transportation: ratings.transportation,
+      HouseKeeping: ratings.HouseKeeping,
+      Food: ratings.Food,
       overallExperience,
       suggestions,
       recommendToOthers,
@@ -385,6 +393,8 @@ const FeedbackForm: React.FC = () => {
           { key: 'factoryVisit', aspects: FACTORY_VISIT_ASPECTS },
           { key: 'venue', aspects: VENUE_ASPECTS },
           { key: 'transportation', aspects: TRANSPORTATION_ASPECTS },
+          { key: 'HouseKeeping', aspects: HOUSEKEEPING_ASPECTS },
+          { key: 'Food', aspects: FOOD_ASPECTS },
         ];
 
         return (

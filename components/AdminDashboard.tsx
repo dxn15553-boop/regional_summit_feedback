@@ -122,8 +122,8 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ feedback, onClose, isAdmi
                 <div className="flex items-center gap-2 flex-wrap">
                   <RatingBadge rating={feedback.overallExperience} />
                   <span className={`text-xs font-bold px-2 py-0.5 rounded-md border ${feedback.recommendToOthers
-                      ? 'bg-emerald-900/20 text-emerald-400 border-emerald-800/60'
-                      : 'bg-red-900/20 text-red-400 border-red-800/60'
+                    ? 'bg-emerald-900/20 text-emerald-400 border-emerald-800/60'
+                    : 'bg-red-900/20 text-red-400 border-red-800/60'
                     }`}>
                     {feedback.recommendToOthers ? '✓ Recommends' : '✗ Not Recommended'}
                   </span>
@@ -147,6 +147,8 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ feedback, onClose, isAdmi
                   { label: 'Factory Visit', emoji: '🏭', data: feedback.factoryVisit },
                   { label: 'Venue', emoji: '🏛️', data: feedback.venue },
                   { label: 'Transportation', emoji: '🚌', data: feedback.transportation },
+                  { label: 'HouseKeeping', emoji: '🛏️', data: feedback.HouseKeeping },
+                  { label: 'Food', emoji: '🍛', data: feedback.Food },
                 ].map(cat => {
                   const rating = cat.data ? Object.values(cat.data)[0] : 0;
                   return (
@@ -256,6 +258,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ role, onLogout }) => {
       { name: 'Factory', key: 'factoryVisit' },
       { name: 'Venue', key: 'venue' },
       { name: 'Transport', key: 'transportation' },
+      { name: 'HouseKeeping', key: 'HouseKeeping' },
+      { name: 'Food', key: 'Food' },
     ] as const;
 
     const categoryPerformance = categories.map(cat => {
