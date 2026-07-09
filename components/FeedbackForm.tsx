@@ -45,9 +45,8 @@ const RatingStars: React.FC<{
             onClick={() => onChange(star)}
             onMouseEnter={() => setHover(star)}
             onMouseLeave={() => setHover(0)}
-            className={`transition-all duration-200 focus:outline-none ${
-              large ? 'p-1.5' : 'p-1'
-            } ${active >= star ? 'text-gold scale-110' : 'text-midnight-700 hover:text-gold/50 hover:scale-105'}`}
+            className={`transition-all duration-200 focus:outline-none ${large ? 'p-1.5' : 'p-1'
+              } ${active >= star ? 'text-gold scale-110' : 'text-midnight-700 hover:text-gold/50 hover:scale-105'}`}
             style={{ filter: active >= star ? 'drop-shadow(0 0 8px rgba(212,175,55,0.8))' : 'none' }}
           >
             <svg
@@ -143,9 +142,7 @@ const SuccessScreen: React.FC<{ guestName: string }> = ({ guestName }) => (
         </p>
       )}
 
-      <p className="text-silver/80 leading-relaxed">
-        Your feedback has been received and recorded. Your voice helps shape the future of DXN's world-class global events.
-      </p>
+
 
       <div className="gold-divider my-4" />
       <p className="text-xs tracking-widest uppercase text-silver/40 font-medium">
@@ -193,7 +190,7 @@ const FeedbackForm: React.FC = () => {
       ...prev,
       [categoryKey]: { ...prev[categoryKey], [aspect]: val }
     }));
-    
+
     // Smooth auto-scroll to next section after a brief delay
     setTimeout(() => {
       if (sectionRefs.current[index + 1]) {
@@ -209,7 +206,7 @@ const FeedbackForm: React.FC = () => {
         return;
       }
     }
-    
+
     // If skipping, fill with anonymous
     if (skipDetails) {
       setGuestInfo({ name: 'Anonymous Guest', country: 'Not specified', designation: 'Attendee' });
@@ -283,15 +280,7 @@ const FeedbackForm: React.FC = () => {
               </div>
             </div>
 
-            <div className="relative mx-auto w-28 h-28 flex items-center justify-center animate-float">
-              <div
-                className="absolute inset-0 rounded-full animate-glowPulse"
-                style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.25) 0%, transparent 70%)' }}
-              />
-              <div className="w-24 h-24 rounded-2xl flex flex-col items-center justify-center border border-gold/40 bg-gradient-to-br from-midnight-800 to-midnight-900/80">
-                <span className="font-display text-3xl font-bold gold-text tracking-wider">DXN</span>
-              </div>
-            </div>
+
 
             <div className="space-y-4">
               <h1 className="font-display text-5xl md:text-7xl font-bold leading-none tracking-tight animate-fadeUp">
@@ -418,8 +407,8 @@ const FeedbackForm: React.FC = () => {
             {sections.map((section, index) => {
               const meta = sectionMeta[section.key];
               return (
-                <div 
-                  key={section.key} 
+                <div
+                  key={section.key}
                   ref={el => { sectionRefs.current[index] = el; }}
                   className={`rating-card flex flex-col md:flex-row md:items-center justify-between gap-5 opacity-0 animate-fadeIn`}
                   style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'forwards' }}
@@ -429,18 +418,18 @@ const FeedbackForm: React.FC = () => {
                     <span className="text-base font-semibold text-champagne">{meta.label}</span>
                   </div>
                   {/* Since aspects only has one item now ('Overall Experience') */}
-                  <RatingStars 
-                    value={ratings[section.key]?.[section.aspects[0]] || 0} 
-                    onChange={(val) => handleRatingChange(section.key, section.aspects[0], val, index)} 
+                  <RatingStars
+                    value={ratings[section.key]?.[section.aspects[0]] || 0}
+                    onChange={(val) => handleRatingChange(section.key, section.aspects[0], val, index)}
                   />
                 </div>
               );
             })}
 
             {/* Overall Experience & Final Thoughts */}
-            <div 
+            <div
               ref={el => { sectionRefs.current[8] = el; }}
-              className="mt-12 pt-8 border-t border-gold/20 space-y-8 opacity-0 animate-fadeIn" 
+              className="mt-12 pt-8 border-t border-gold/20 space-y-8 opacity-0 animate-fadeIn"
               style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}
             >
               <h3 className="font-display text-3xl font-semibold text-champagne text-center mb-6">Final Thoughts</h3>
@@ -466,22 +455,20 @@ const FeedbackForm: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setRecommendToOthers(true)}
-                    className={`flex-1 py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all border ${
-                      recommendToOthers
-                        ? 'bg-gold/15 border-gold/60 text-gold shadow-gold'
-                        : 'border-midnight-700 text-silver/60 hover:border-midnight-600 bg-midnight-900/40'
-                    }`}
+                    className={`flex-1 py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all border ${recommendToOthers
+                      ? 'bg-gold/15 border-gold/60 text-gold shadow-gold'
+                      : 'border-midnight-700 text-silver/60 hover:border-midnight-600 bg-midnight-900/40'
+                      }`}
                   >
                     ✓ Yes, Absolutely
                   </button>
                   <button
                     type="button"
                     onClick={() => setRecommendToOthers(false)}
-                    className={`flex-1 py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all border ${
-                      !recommendToOthers
-                        ? 'bg-gold/15 border-gold/60 text-gold shadow-gold'
-                        : 'border-midnight-700 text-silver/60 hover:border-midnight-600 bg-midnight-900/40'
-                    }`}
+                    className={`flex-1 py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all border ${!recommendToOthers
+                      ? 'bg-gold/15 border-gold/60 text-gold shadow-gold'
+                      : 'border-midnight-700 text-silver/60 hover:border-midnight-600 bg-midnight-900/40'
+                      }`}
                   >
                     Not This Time
                   </button>
@@ -513,8 +500,8 @@ const FeedbackForm: React.FC = () => {
       <div className="min-h-screen py-10 px-4 md:px-8 w-full flex items-start justify-center">
         <div className="max-w-3xl w-full mx-auto space-y-6">
           {step === 0 && (
-            <div className="text-center">
-              <p className="text-xs tracking-[0.3em] uppercase text-silver/40 font-medium">
+            <div className="text-center pt-2">
+              <p className="text-xs tracking-[0.3em] uppercase text-silver/80 font-semibold drop-shadow-sm">
                 DXN International · South Asia Regional Manufacturing Summit · 2026
               </p>
             </div>
@@ -588,7 +575,7 @@ const FeedbackForm: React.FC = () => {
               </div>
             )}
           </div>
-          <p className="text-center text-xs text-silver/25 tracking-wider pb-6">
+          <p className="text-center text-xs text-silver/60 font-medium tracking-wider pb-6">
             © 2026 DXN International · Confidential Feedback Portal
           </p>
         </div>

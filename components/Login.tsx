@@ -35,43 +35,25 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-6"
-      style={{
-        background: 'linear-gradient(135deg, #060915 0%, #0d1526 60%, #111d44 100%)',
-      }}
+      className="min-h-screen flex items-center justify-center p-6 aurora-bg"
     >
       {/* Background orb */}
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at 50% 40%, rgba(212,175,55,0.06) 0%, transparent 60%)',
+          background: 'radial-gradient(ellipse at 50% 40%, rgba(212,175,55,0.07) 0%, transparent 60%)',
         }}
       />
 
       <div className="w-full max-w-sm relative z-10 animate-fadeIn">
         {/* Top badge */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[10px] font-semibold tracking-[0.2em] uppercase mb-6"
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[10px] font-bold tracking-[0.2em] uppercase mb-6"
             style={{ border: '1px solid rgba(212,175,55,0.25)', color: 'rgba(212,175,55,0.7)', background: 'rgba(212,175,55,0.06)' }}>
-            DXN SOUTH ASIA REGIONAL MANUFACTURING SUMMIT · ADMIN
+            DXN ADMIN PORTAL · 2026
           </div>
 
-          {/* DXN logo */}
-          <div className="mx-auto w-20 h-20 rounded-2xl flex flex-col items-center justify-center mb-5"
-            style={{
-              background: 'linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.04))',
-              border: '1px solid rgba(212,175,55,0.35)',
-              boxShadow: '0 0 25px rgba(212,175,55,0.18)',
-            }}>
-            <span className="font-display font-bold text-2xl"
-              style={{
-                background: 'linear-gradient(135deg, #b8941f, #d4af37, #ecbc2d)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>
-              DXN
-            </span>
-          </div>
+
 
           <h1 className="font-display text-3xl font-bold text-champagne">Analytics Portal</h1>
           <p className="text-sm mt-2" style={{ color: 'rgba(184,176,160,0.55)' }}>
@@ -167,29 +149,30 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         </div>
 
         {/* Demo credentials */}
-        <div className="mt-5 p-5 rounded-xl"
+        {/* <div className="mt-4 p-5 rounded-2xl"
           style={{
-            background: 'rgba(13,21,38,0.6)',
-            border: '1px solid rgba(212,175,55,0.08)',
+            background: 'linear-gradient(135deg, rgba(17,29,68,0.7), rgba(13,21,38,0.8))',
+            border: '1px solid rgba(212,175,55,0.1)',
           }}>
-          <p className="text-[9px] font-bold tracking-[0.25em] uppercase mb-3" style={{ color: 'rgba(184,176,160,0.3)' }}>
-            Demo Credentials
-          </p>
+          <div className="flex items-center gap-2 mb-3">
+            <span className="w-1 h-3.5 rounded-full inline-block" style={{ background: 'linear-gradient(180deg,#ecbc2d,#b8941f)' }}></span>
+            <p className="text-[9px] font-bold tracking-[0.25em] uppercase" style={{ color: 'rgba(184,176,160,0.45)' }}>Demo Credentials</p>
+          </div>
           <div className="space-y-2">
-            <div className="flex justify-between items-center text-xs">
-              <span style={{ color: 'rgba(184,176,160,0.5)' }}>Administrator</span>
-              <code className="font-mono font-semibold text-champagne/70 bg-midnight-800/60 px-2 py-0.5 rounded text-[11px]">
+            <div className="flex justify-between items-center text-xs rounded-lg px-3 py-2" style={{ background: 'rgba(6,9,21,0.4)', border: '1px solid rgba(212,175,55,0.07)' }}>
+              <span className="font-medium" style={{ color: 'rgba(184,176,160,0.55)' }}>Administrator</span>
+              <code className="font-mono font-bold tracking-wide" style={{ color: 'rgba(212,175,55,0.7)', background: 'rgba(212,175,55,0.08)', padding: '2px 8px', borderRadius: '6px', fontSize: '11px' }}>
                 admin / admin123
               </code>
             </div>
-            <div className="flex justify-between items-center text-xs">
-              <span style={{ color: 'rgba(184,176,160,0.5)' }}>Viewer Only</span>
-              <code className="font-mono font-semibold text-champagne/70 bg-midnight-800/60 px-2 py-0.5 rounded text-[11px]">
+            <div className="flex justify-between items-center text-xs rounded-lg px-3 py-2" style={{ background: 'rgba(6,9,21,0.4)', border: '1px solid rgba(212,175,55,0.07)' }}>
+              <span className="font-medium" style={{ color: 'rgba(184,176,160,0.55)' }}>Viewer Only</span>
+              <code className="font-mono font-bold tracking-wide" style={{ color: 'rgba(212,175,55,0.7)', background: 'rgba(212,175,55,0.08)', padding: '2px 8px', borderRadius: '6px', fontSize: '11px' }}>
                 viewer / view123
               </code>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

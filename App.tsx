@@ -15,33 +15,19 @@ const Sidebar: React.FC<{ isLoggedIn: boolean; onLogout: () => void }> = ({ isLo
       style={{
         background: 'linear-gradient(180deg, #060915 0%, #0d1526 100%)',
         borderRight: '1px solid rgba(212,175,55,0.12)',
-        borderTop: '1px solid rgba(212,175,55,0.12)',
+        borderTop: '1px solid rgba(212,175,55,0.15)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
       }}
     >
       {/* Logo / Branding — desktop only */}
       <div className="hidden md:flex flex-col items-center gap-2 p-7 pb-5" style={{ borderBottom: '1px solid rgba(212,175,55,0.1)' }}>
-        <div
-          className="w-14 h-14 rounded-2xl flex flex-col items-center justify-center mb-1"
-          style={{
-            background: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05))',
-            border: '1px solid rgba(212,175,55,0.35)',
-            boxShadow: '0 0 20px rgba(212,175,55,0.2)',
-          }}
-        >
-          <span
-            className="font-display font-bold text-xl"
-            style={{
-              background: 'linear-gradient(135deg, #b8941f, #d4af37, #ecbc2d)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            DXN
-          </span>
+        <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-glow overflow-hidden mb-1 p-1.5" style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.35)' }}>
+          <img src="/dxn-logo.png" alt="DXN Logo" className="w-full h-full object-contain" />
         </div>
         <div className="text-center">
-          <p className="text-champagne font-semibold text-sm tracking-wide">South Asia Regional Manufacturing Summit</p>
-          <p className="text-[10px] tracking-[0.2em] uppercase font-medium" style={{ color: 'rgba(184,176,160,0.4)' }}>
+          <p className="font-display text-base font-semibold text-champagne leading-snug">South Asia Summit</p>
+          <p className="text-[10px] tracking-[0.2em] uppercase font-medium mt-0.5" style={{ color: 'rgba(212,175,55,0.5)' }}>
             Feedback Portal · 2026
           </p>
         </div>
@@ -55,7 +41,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean; onLogout: () => void }> = ({ isLo
           style={{
             background: isActive('/') ? 'rgba(212,175,55,0.1)' : 'transparent',
             border: isActive('/') ? '1px solid rgba(212,175,55,0.25)' : '1px solid transparent',
-            color: isActive('/') ? '#d4af37' : 'rgba(184,176,160,0.55)',
+            color: isActive('/') ? '#d4af37' : 'rgba(184,176,160,0.9)',
           }}
         >
           {/* Feedback icon */}
@@ -64,7 +50,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean; onLogout: () => void }> = ({ isLo
           </svg>
           <div className="md:block">
             <p className="text-sm font-semibold">Submit Feedback</p>
-            <p className="text-[10px] tracking-wider hidden md:block" style={{ color: 'rgba(184,176,160,0.35)' }}>Guest Portal</p>
+            <p className="text-[10px] tracking-wider hidden md:block font-medium" style={{ color: isActive('/') ? 'rgba(212,175,55,0.8)' : 'rgba(184,176,160,0.75)' }}>Guest Portal</p>
           </div>
           {isActive('/') && (
             <div className="hidden md:block ml-auto w-1.5 h-1.5 rounded-full" style={{ background: '#d4af37', boxShadow: '0 0 8px rgba(212,175,55,0.8)' }} />
@@ -77,7 +63,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean; onLogout: () => void }> = ({ isLo
           style={{
             background: isActive('/admin') ? 'rgba(212,175,55,0.1)' : 'transparent',
             border: isActive('/admin') ? '1px solid rgba(212,175,55,0.25)' : '1px solid transparent',
-            color: isActive('/admin') ? '#d4af37' : 'rgba(184,176,160,0.55)',
+            color: isActive('/admin') ? '#d4af37' : 'rgba(184,176,160,0.9)',
           }}
         >
           {/* Dashboard icon */}
@@ -86,7 +72,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean; onLogout: () => void }> = ({ isLo
           </svg>
           <div className="md:block">
             <p className="text-sm font-semibold">Dashboard</p>
-            <p className="text-[10px] tracking-wider hidden md:block" style={{ color: 'rgba(184,176,160,0.35)' }}>Analytics & Reports</p>
+            <p className="text-[10px] tracking-wider hidden md:block font-medium" style={{ color: isActive('/admin') ? 'rgba(212,175,55,0.8)' : 'rgba(184,176,160,0.75)' }}>Analytics & Reports</p>
           </div>
           {isActive('/admin') && (
             <div className="hidden md:block ml-auto w-1.5 h-1.5 rounded-full" style={{ background: '#d4af37', boxShadow: '0 0 8px rgba(212,175,55,0.8)' }} />
@@ -146,6 +132,19 @@ const App: React.FC = () => {
         className="flex flex-col md:flex-row min-h-screen"
         style={{ background: '#060915', color: '#f5f0e8' }}
       >
+        {/* Mobile Header (Hidden on Desktop) */}
+        <div className="md:hidden flex items-center p-4 sticky top-0 z-[90]" style={{ borderBottom: '1px solid rgba(212,175,55,0.1)', background: 'rgba(6,9,21,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-glow overflow-hidden bg-white p-1" style={{ border: '1px solid rgba(212,175,55,0.35)' }}>
+              <img src="/dxn-logo.png" alt="DXN Logo" className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <p className="font-display font-bold text-champagne text-[13px] leading-tight">South Asia Summit</p>
+              <p className="text-[9px] tracking-widest uppercase font-semibold mt-0.5" style={{ color: 'rgba(212,175,55,0.6)' }}>Feedback Portal</p>
+            </div>
+          </div>
+        </div>
+
         <Sidebar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
         <main className="flex-1 overflow-y-auto pb-24 md:pb-0">
           <Routes>

@@ -43,6 +43,21 @@ export default {
                 },
                 champagne: '#f5f0e8',
                 silver: '#b8b0a0',
+                accent: '#d4af37',
+                // summit-* aliases → midnight palette (fixes AdminDashboard legacy classes)
+                summit: {
+                    50:  '#eef1f8',
+                    100: '#d5ddef',
+                    200: '#aabade',
+                    300: '#7e96cc',
+                    400: '#9e9688',   // silver-ish for muted text
+                    500: '#3656a3',
+                    600: '#254089',
+                    700: '#1b2f6e',
+                    800: '#111d44',   // same as midnight-800
+                    900: '#0d1526',   // same as midnight-900
+                    950: '#060915',   // same as midnight-950
+                },
             },
             boxShadow: {
                 'gold':        '0 0 20px rgba(212, 175, 55, 0.3)',
