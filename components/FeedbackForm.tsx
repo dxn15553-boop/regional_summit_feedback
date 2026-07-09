@@ -287,10 +287,10 @@ const FeedbackForm: React.FC = () => {
 
 
             <div className="space-y-4">
-              <h1 className="font-display text-5xl md:text-7xl font-bold leading-none tracking-tight animate-fadeUp">
-                <span style={{ color: '#f5f0e8' }}>South Asia Regional Manufacturing Summit - 2026</span>
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight animate-fadeUp max-w-4xl mx-auto px-4">
+                <span style={{ color: '#f5f0e8' }}>South Asia Regional<br className="hidden md:block" /> Manufacturing Summit - 2026</span>
               </h1>
-              <h2 className="font-display text-4xl md:text-6xl italic font-semibold gold-text glow-gold animate-fadeIn">
+              <h2 className="font-display text-2xl sm:text-3xl md:text-5xl italic font-semibold gold-text glow-gold animate-fadeIn px-4">
                 Executive Feedback Portal
               </h2>
             </div>
