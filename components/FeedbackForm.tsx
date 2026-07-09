@@ -503,7 +503,7 @@ const FeedbackForm: React.FC = () => {
 
   return (
     <div className="aurora-bg min-h-full">
-      <div className="min-h-screen py-10 px-4 md:px-8 w-full flex items-start justify-center">
+      <div className="min-h-screen py-10 px-4 md:px-8 w-full flex items-center justify-center">
         <div className="max-w-3xl w-full mx-auto space-y-6">
 
 
