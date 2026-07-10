@@ -331,7 +331,7 @@ const FeedbackForm: React.FC = () => {
               <div className="text-center py-5 animate-fadeUp">
                 <button
                   onClick={() => handleNext(false)}
-                  className="btn-gold px-5 py-2.5 sm:px-8 sm:py-3 rounded-full text-sm sm:text-base tracking-wide font-semibold inline-flex items-center gap-2 hover:scale-105 transition-transform shadow-luxury"
+                  className="btn-gold px-4 py-2 sm:px-8 sm:py-3 rounded-full text-xs sm:text-base tracking-wide font-semibold inline-flex items-center gap-2 hover:scale-105 transition-transform shadow-luxury"
                 >
                   <span className="text-xl">👉</span> Click Here to Complete the Feedback Form
                 </button>
@@ -663,7 +663,7 @@ const FeedbackForm: React.FC = () => {
                   <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="btn-gold px-6 py-2.5 sm:px-10 sm:py-3 rounded-xl text-xs sm:text-sm tracking-widest uppercase flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="btn-gold px-4 py-2 sm:px-10 sm:py-3 rounded-xl text-[10px] sm:text-sm tracking-widest uppercase flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
