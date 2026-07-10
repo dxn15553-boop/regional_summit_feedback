@@ -456,12 +456,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ role, onLogout }) => {
               </div>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={stats.categoryPerformance}>
+                  <BarChart data={stats.categoryPerformance} barCategoryGap="20%">
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(212,175,55,0.06)" />
-                    <XAxis dataKey="name" fontSize={10} tickLine={false} axisLine={false} tick={{ fill: 'rgba(184,176,160,0.85)' }} />
+                    <XAxis dataKey="name" fontSize={9} tickLine={false} axisLine={false} tick={{ fill: 'rgba(184,176,160,0.85)' }} interval="preserveStartEnd" />
                     <YAxis domain={[0, 5]} fontSize={10} tickLine={false} axisLine={false} tick={{ fill: 'rgba(184,176,160,0.85)' }} />
                     <RechartsTooltip cursor={{ fill: 'rgba(212,175,55,0.05)' }} contentStyle={{ borderRadius: '12px', border: '1px solid rgba(212,175,55,0.2)', background: '#0d1526', color: '#f5f0e8', fontSize: '12px' }} />
-                    <Bar dataKey="score" fill="#d4af37" radius={[5, 5, 0, 0]} barSize={32} />
+                    <Bar dataKey="score" fill="#d4af37" radius={[4, 4, 0, 0]} maxBarSize={36} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
