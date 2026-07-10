@@ -146,7 +146,7 @@ const SuccessScreen: React.FC<{ guestName: string }> = ({ guestName }) => (
       )}
 
       <p className="text-sm text-silver/70 leading-relaxed max-w-sm mx-auto">
-        Thank you for taking the time to complete this evaluation Your feedback is instrumental in maintaining DXN's manufacturing excellence and operational standard.
+        Thank you for taking the time to complete this evaluation. Your feedback is instrumental in maintaining DXN's manufacturing excellence and operational standard.
       </p>
 
       <div className="gold-divider my-4" />
