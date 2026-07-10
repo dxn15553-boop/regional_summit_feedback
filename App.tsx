@@ -13,11 +13,11 @@ const Sidebar: React.FC<{ isLoggedIn: boolean; onLogout: () => void }> = ({ isLo
     <nav
       className="fixed bottom-0 left-0 right-0 md:sticky md:top-0 md:w-64 md:h-screen flex md:flex-col z-[100] flex-shrink-0"
       style={{
-        background: 'linear-gradient(180deg, #060915 0%, #0d1526 100%)',
-        borderRight: '1px solid rgba(212,175,55,0.12)',
-        borderTop: '1px solid rgba(212,175,55,0.15)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
+        background: 'linear-gradient(180deg, #0f0f0f 0%, #141414 40%, #111a14 80%, #0f0f0f 100%)',
+        borderRight: '1px solid rgba(212,175,55,0.16)',
+        borderTop:   '1px solid rgba(212,175,55,0.18)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
       }}
     >
       {/* Logo / Branding — desktop only */}
@@ -130,10 +130,10 @@ const App: React.FC = () => {
     <HashRouter>
       <div
         className="flex flex-col md:flex-row min-h-screen"
-        style={{ background: '#060915', color: '#f5f0e8' }}
+        style={{ background: '#0f0f0f', color: '#f0ede8' }}
       >
         {/* Mobile Header (Hidden on Desktop) */}
-        <div className="md:hidden flex items-center p-4 sticky top-0 z-[90]" style={{ borderBottom: '1px solid rgba(212,175,55,0.1)', background: 'rgba(6,9,21,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+        <div className="md:hidden flex items-center p-4 sticky top-0 z-[90]" style={{ borderBottom: '1px solid rgba(212,175,55,0.14)', background: 'rgba(15,15,15,0.94)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-glow overflow-hidden bg-white p-1" style={{ border: '1px solid rgba(212,175,55,0.35)' }}>
               <img src="/dxn-logo.png" alt="DXN Logo" className="w-full h-full object-contain" />

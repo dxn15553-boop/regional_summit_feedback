@@ -1,40 +1,51 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { dbService } from '../services/db';
 import { GuestInfo, FeedbackData } from '../types';
 import {
-  REGISTRATION_ASPECTS,
-  ACCOMMODATION_ASPECTS,
-  ROOM_NO_ASPECTS,
-  GALA_DINNER_ASPECTS,
-  CULTURAL_PROGRAM_ASPECTS,
-  EVENT_MANAGEMENT_ASPECTS,
+  OVERALL_SUMMIT_ASPECTS,
+  TECHNICAL_SESSIONS_ASPECTS,
   FACTORY_VISIT_ASPECTS,
-  VENUE_ASPECTS,
+  HOSPITALITY_ASPECTS,
   TRANSPORTATION_ASPECTS,
-  HOUSEKEEPING_ASPECTS,
   FOOD_ASPECTS,
-  PRODUCTS_ASPECTS,
+  EVENT_ADMIN_ASPECTS,
 } from '../constants';
 
-// ── Section icons ──────────────────────────────────────────────────────────
-const sectionMeta: Record<string, { icon: string; color: string; label: string }> = {
-  registrationReception: { icon: '🏷️', color: 'from-gold/20 to-midnight-900/60', label: 'Registration & Reception' },
-  accommodation: { icon: '🏨', color: 'from-blue-900/30 to-midnight-900/60', label: 'Accommodation' },
-  galaDinner: { icon: '🍽️', color: 'from-amber-900/30 to-midnight-900/60', label: 'Gala Dinner' },
-  culturalProgram: { icon: '🎭', color: 'from-purple-900/30 to-midnight-900/60', label: 'Cultural Program' },
-  eventManagement: { icon: '📋', color: 'from-teal-900/30 to-midnight-900/60', label: 'Event Management' },
-  factoryVisit: { icon: '🏭', color: 'from-emerald-900/30 to-midnight-900/60', label: 'Factory Visit' },
-  venue: { icon: '🏛️', color: 'from-rose-900/30 to-midnight-900/60', label: 'Venue' },
-  transportation: { icon: '🚌', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Transportation' },
-  HouseKeeping: { icon: '🛏️', color: 'from-cyan-900/30 to-midnight-900/60', label: 'HouseKeeping' },
-  Food: { icon: '🍛', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Food' },
-  roomNo: { icon: '🚪', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Room No' },
-  products: { icon: '🛍️', color: 'from-cyan-900/30 to-midnight-900/60', label: 'Products' },
+// ── Section metadata ──────────────────────────────────────────────────────────
+const sectionMeta: Record<string, { icon: string; label: string; }> = {
+  overallSummitExperience: {
+    icon: '🌐',
+    label: '1. Overall Summit Experience'
+  },
+  technicalSessions: {
+    icon: '🏭',
+    label: '2. Technical Sessions & Presentations'
+  },
+  factoryVisits: {
+    icon: '🌿',
+    label: '3. Siddipet Factory Visits & Manufacturing Excellence'
+  },
+  hospitality: {
+    icon: '🏨',
+    label: '4. Hospitality & Accommodation'
+  },
+  transportation: {
+    icon: '🚌',
+    label: '5. Transportation & Logistics'
+  },
+  foodRefreshments: {
+    icon: '🍛',
+    label: '6. Food & Refreshments'
+  },
+  eventAdministration: {
+    icon: '📋',
+    label: '7. Event Administration & Communication'
+  },
 };
 
-const STAR_LABELS = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+const STAR_LABELS = ['', 'Poor', 'Fair', 'Satisfactory', 'Very Good', 'Excellent'];
 
-// ── Rating Stars ────────────────────────────────────────────────────────────
+// ── Rating Stars ─────────────────────────────────────────────────────────────
 const RatingStars: React.FC<{
   value: number;
   onChange: (val: number) => void;
@@ -44,7 +55,7 @@ const RatingStars: React.FC<{
   const active = hover || value;
 
   return (
-    <div className="flex flex-col items-center sm:items-start gap-2">
+    <div className="flex flex-col items-center sm:items-end gap-1">
       <div className="flex gap-1.5">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
@@ -54,11 +65,11 @@ const RatingStars: React.FC<{
             onMouseEnter={() => setHover(star)}
             onMouseLeave={() => setHover(0)}
             className={`transition-all duration-200 focus:outline-none ${large ? 'p-1.5' : 'p-1'
-              } ${active >= star ? 'text-gold scale-110' : 'text-midnight-700 hover:text-gold/50 hover:scale-105'}`}
+              } ${active >= star ? 'text-gold scale-110' : 'text-white/30 hover:text-gold/60 hover:scale-105'}`}
             style={{ filter: active >= star ? 'drop-shadow(0 0 8px rgba(212,175,55,0.8))' : 'none' }}
           >
             <svg
-              className={large ? 'w-10 h-10' : 'w-8 h-8'}
+              className={large ? 'w-10 h-10' : 'w-7 h-7'}
               viewBox="0 0 24 24"
               fill={active >= star ? 'currentColor' : 'none'}
               stroke="currentColor"
@@ -71,9 +82,7 @@ const RatingStars: React.FC<{
       </div>
       <div className="h-4">
         {active > 0 && (
-          <span
-            className="text-[10px] font-bold tracking-widest uppercase text-gold/90 transition-all animate-fadeIn"
-          >
+          <span className="text-[10px] font-bold tracking-widest uppercase text-gold/90 animate-fadeIn">
             {STAR_LABELS[active]}
           </span>
         )}
@@ -82,55 +91,45 @@ const RatingStars: React.FC<{
   );
 };
 
-// ── Step Indicator ───────────────────────────────────────────────────────────
-const StepIndicator: React.FC<{ currentStep: number }> = ({ currentStep }) => {
-  const steps = ['Welcome', 'Guest Details', 'Event Ratings'];
-  const progress = Math.round((currentStep / 2) * 100);
+// ── Step Indicator ────────────────────────────────────────────────────────────
+const StepIndicator: React.FC<{ currentStep: number; totalSteps: number }> = ({ currentStep, totalSteps }) => {
+  const labels = ['Welcome', 'Delegate Info', 'Core Evaluation', 'Qualitative Feedback'];
+  const progress = Math.round((currentStep / totalSteps) * 100);
 
   return (
     <div className="w-full space-y-3">
-      {/* Progress bar */}
-      <div className="relative h-1 w-full bg-midnight-800 rounded-full overflow-hidden">
+      <div className="relative h-1.5 w-full rounded-full overflow-hidden" style={{ background: 'rgba(40,40,40,0.70)' }}>
         <div
-          className="absolute left-0 top-0 h-full rounded-full transition-all duration-700 ease-out"
-          style={{
-            width: `${progress}%`,
-            background: 'linear-gradient(90deg, #b8941f, #d4af37, #ecbc2d)',
-            boxShadow: '0 0 10px rgba(212,175,55,0.6)',
-          }}
+          className="absolute left-0 top-0 h-full rounded-full transition-all duration-700 ease-out progress-bar-fill"
+          style={{ width: `${progress}%` }}
         />
       </div>
-      {/* Step label */}
-      <div className="flex items-center justify-between">
-        <span className="section-badge">
-          Step {currentStep} of 2
-        </span>
-        <span className="text-xs text-silver/60 font-medium tracking-wide">
-          {steps[currentStep]}
-        </span>
+      <div className="flex items-center justify-end">
+        <span className="text-xs text-silver/60 font-medium tracking-wide">{labels[currentStep]}</span>
       </div>
     </div>
   );
 };
 
-// ── Success Screen ───────────────────────────────────────────────────────────
+// ── Success Screen ────────────────────────────────────────────────────────────
 const SuccessScreen: React.FC<{ guestName: string }> = ({ guestName }) => (
   <div className="aurora-bg min-h-screen flex flex-col items-center justify-center p-6">
-    <div className="luxury-card max-w-lg w-full p-10 text-center space-y-6 animate-fadeIn relative overflow-hidden">
+    <div className="luxury-card max-w-lg w-full p-10 text-center space-y-6 animate-fadeIn relative overflow-hidden shadow-luxury">
       <div className="absolute inset-0 pointer-events-none">
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%)' }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(29,78,216,0.05) 50%, transparent 70%)' }}
         />
       </div>
 
       <div className="relative mx-auto w-24 h-24 flex items-center justify-center">
         <div
           className="absolute inset-0 rounded-full animate-ripple"
-          style={{ background: 'rgba(212,175,55,0.2)', animationDelay: '0.2s' }}
+          style={{ background: 'rgba(212,175,55,0.15)', animationDelay: '0.2s' }}
         />
-        <div className="w-20 h-20 rounded-full flex items-center justify-center bg-gradient-to-br from-gold/30 to-gold/10 border border-gold/40">
-          <svg className="w-10 h-10 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <div className="w-20 h-20 rounded-full flex items-center justify-center border border-gold/30"
+          style={{ background: 'linear-gradient(135deg, rgba(29,78,216,0.15), rgba(212,175,55,0.10))' }}>
+          <svg className="w-10 h-10 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -140,21 +139,19 @@ const SuccessScreen: React.FC<{ guestName: string }> = ({ guestName }) => (
         <div className="section-badge text-xs tracking-widest">DXN SOUTH ASIA REGIONAL MANUFACTURING SUMMIT 2026</div>
       </div>
 
-      <h1 className="font-display text-5xl font-bold gold-text glow-gold leading-tight">
-        Thank You!
-      </h1>
+      <h1 className="font-display text-5xl font-bold gold-text glow-gold leading-tight">Thank You!</h1>
 
       {guestName && (
-        <p className="font-display text-2xl text-champagne/80 italic">
-          Dear {guestName},
-        </p>
+        <p className="font-display text-2xl text-champagne/80 italic">Dear {guestName},</p>
       )}
 
-
+      <p className="text-sm text-silver/70 leading-relaxed max-w-sm mx-auto">
+        Thank you for taking the time to complete this evaluation Your feedback is instrumental in maintaining DXN's manufacturing excellence and operational standard.
+      </p>
 
       <div className="gold-divider my-4" />
       <p className="text-xs tracking-widest uppercase text-silver/40 font-medium">
-        Your voice shapes the future of DXN
+        One World · One Market · One Mind
       </p>
 
       <button
@@ -167,64 +164,78 @@ const SuccessScreen: React.FC<{ guestName: string }> = ({ guestName }) => (
   </div>
 );
 
-// ── Main Form ────────────────────────────────────────────────────────────────
+// ── Aspect Rating Row ─────────────────────────────────────────────────────────
+const AspectRow: React.FC<{
+  aspect: string;
+  value: number;
+  onChange: (val: number) => void;
+  index: number;
+}> = ({ aspect, value, onChange, index }) => (
+  <div
+    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-4 border-b border-white/5 last:border-0 opacity-0 animate-fadeIn"
+    style={{ animationDelay: `${index * 0.04}s`, animationFillMode: 'forwards' }}
+  >
+    <p className="text-sm text-silver/90 leading-snug flex-1 pr-4">{aspect}</p>
+    <RatingStars value={value} onChange={onChange} />
+  </div>
+);
+
+// ── Main Form ─────────────────────────────────────────────────────────────────
 const FeedbackForm: React.FC = () => {
+  const TOTAL_STEPS = 3;
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  // Form State
-  const [guestInfo, setGuestInfo] = useState<GuestInfo>({ name: '', country: '', designation: '' });
-  const [ratings, setRatings] = useState<Record<string, Record<string, number>>>({
-    registrationReception: {},
-    accommodation: {},
-    galaDinner: {},
-    culturalProgram: {},
-    eventManagement: {},
-    factoryVisit: {},
-    venue: {},
-    transportation: {},
-    HouseKeeping: {},
-    Food: {}
+  // Section A — Delegate Info
+  const [guestInfo, setGuestInfo] = useState<GuestInfo>({
+    name: '', designation: '', country: '', email: '',
   });
+
+  // Section B — Ratings per category, per aspect
+  const [ratings, setRatings] = useState<Record<string, Record<string, number>>>({
+    overallSummitExperience: {},
+    technicalSessions: {},
+    factoryVisits: {},
+    hospitality: {},
+    transportation: {},
+    foodRefreshments: {},
+    eventAdministration: {},
+  });
+
+  // Overall
   const [overallExperience, setOverallExperience] = useState<number>(0);
-  const [suggestions, setSuggestions] = useState('');
   const [recommendToOthers, setRecommendToOthers] = useState(true);
 
-  // Auto-scroll refs
+  // Section C — Qualitative
+  const [mostValuableAspect, setMostValuableAspect] = useState('');
+  const [mostImpactfulSession, setMostImpactfulSession] = useState('');
+  const [suggestionsForImprovement, setSuggestionsForImprovement] = useState('');
+  const [futureTopics, setFutureTopics] = useState('');
+
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const handleRatingChange = (categoryKey: string, aspect: string, val: number, index: number) => {
+  const handleRatingChange = (categoryKey: string, aspect: string, val: number) => {
     setRatings(prev => ({
       ...prev,
-      [categoryKey]: { ...prev[categoryKey], [aspect]: val }
+      [categoryKey]: { ...prev[categoryKey], [aspect]: val },
     }));
-
-    // Smooth auto-scroll to next section after a brief delay
-    setTimeout(() => {
-      if (sectionRefs.current[index + 1]) {
-        sectionRefs.current[index + 1]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 400);
   };
 
   const handleNext = (skipDetails = false) => {
     if (step === 1 && !skipDetails) {
       if (!guestInfo.name.trim() || !guestInfo.country.trim() || !guestInfo.designation.trim()) {
-        setError('Please fill in all guest details, or click "Skip & Remain Anonymous".');
+        setError('Please fill in Name, Designation, and Country — or click "Skip & Remain Anonymous".');
         return;
       }
     }
-
-    // If skipping, fill with anonymous
     if (skipDetails) {
-      setGuestInfo({ name: 'Anonymous Guest', country: 'Not specified', designation: 'Attendee' });
+      setGuestInfo({ name: 'Anonymous Delegate', designation: 'Attendee', country: 'Not specified', email: '' });
     }
-
     setError('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setStep(s => Math.min(s + 1, 2));
+    setStep(s => Math.min(s + 1, TOTAL_STEPS));
   };
 
   const handleBack = () => {
@@ -234,38 +245,8 @@ const FeedbackForm: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    // Validate required fields
-    const requiredSections = [
-      'registrationReception',
-      'accommodation',
-      'roomNo',
-      'galaDinner',
-      'culturalProgram',
-      'eventManagement',
-      'factoryVisit',
-      'venue',
-      'transportation',
-      'HouseKeeping',
-      'Food',
-      'products'
-    ];
-
-    for (let i = 0; i < requiredSections.length; i++) {
-      const key = requiredSections[i];
-      if (!ratings[key] || Object.keys(ratings[key]).length === 0) {
-        setError(`Please provide a rating for ${sectionMeta[key].label}.`);
-        if (sectionRefs.current[i]) {
-          sectionRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        return;
-      }
-    }
-
     if (overallExperience === 0) {
-      setError('Please rate your overall experience before submitting.');
-      if (sectionRefs.current[12]) {
-        sectionRefs.current[12]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+      setError('Please rate your Overall Experience before submitting.');
       return;
     }
 
@@ -276,21 +257,19 @@ const FeedbackForm: React.FC = () => {
       id: crypto.randomUUID(),
       timestamp: new Date().toISOString(),
       guestInfo,
-      registrationReception: ratings.registrationReception,
-      accommodation: ratings.accommodation,
-      roomNo: ratings.roomNo,
-      galaDinner: ratings.galaDinner,
-      culturalProgram: ratings.culturalProgram,
-      eventManagement: ratings.eventManagement,
-      factoryVisit: ratings.factoryVisit,
-      venue: ratings.venue,
+      overallSummitExperience: ratings.overallSummitExperience,
+      technicalSessions: ratings.technicalSessions,
+      factoryVisits: ratings.factoryVisits,
+      hospitality: ratings.hospitality,
       transportation: ratings.transportation,
-      HouseKeeping: ratings.HouseKeeping,
-      Food: ratings.Food,
-      products: ratings.products,
+      foodRefreshments: ratings.foodRefreshments,
+      eventAdministration: ratings.eventAdministration,
       overallExperience,
-      suggestions,
       recommendToOthers,
+      mostValuableAspect,
+      mostImpactfulSession,
+      suggestionsForImprovement,
+      futureTopics,
     };
 
     try {
@@ -305,231 +284,326 @@ const FeedbackForm: React.FC = () => {
   };
 
   if (isSuccess) {
-    return <SuccessScreen guestName={guestInfo.name === 'Anonymous Guest' ? '' : guestInfo.name} />;
+    return <SuccessScreen guestName={guestInfo.name === 'Anonymous Delegate' ? '' : guestInfo.name} />;
   }
+
+  // ── Section B data ──────────────────────────────────────────────────────────
+  const sections = [
+    { key: 'overallSummitExperience', aspects: OVERALL_SUMMIT_ASPECTS },
+    { key: 'technicalSessions', aspects: TECHNICAL_SESSIONS_ASPECTS },
+    { key: 'factoryVisits', aspects: FACTORY_VISIT_ASPECTS },
+    { key: 'hospitality', aspects: HOSPITALITY_ASPECTS },
+    { key: 'transportation', aspects: TRANSPORTATION_ASPECTS },
+    { key: 'foodRefreshments', aspects: FOOD_ASPECTS },
+    { key: 'eventAdministration', aspects: EVENT_ADMIN_ASPECTS },
+  ];
 
   const renderStep = () => {
     switch (step) {
-      // ── Welcome ──────────────────────────────────────────────────────────
+
+      // ── Step 0: Welcome / Delegate Communication ──────────────────────────
       case 0:
         return (
-          <div className="text-center space-y-8 py-8 animate-fadeIn">
+          <div className="space-y-6 animate-fadeIn text-left text-champagne/90 leading-relaxed font-light">
+            <div className="text-center space-y-3 mb-6">
 
-
-
-
-            <div className="space-y-4">
-              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight animate-fadeUp max-w-4xl mx-auto px-4">
-                <span style={{ color: '#f5f0e8' }}>South Asia Regional<br className="hidden md:block" /> Manufacturing Summit  2026</span>
+              <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold gold-text glow-gold animate-fadeUp">
+                Delegate Communication
               </h1>
-              <h2 className="font-display text-2xl sm:text-3xl md:text-5xl italic font-semibold gold-text glow-gold animate-fadeIn px-4">
-                Executive Feedback Portal
+              <h2 className="font-display text-lg sm:text-xl italic font-semibold text-champagne/80 animate-fadeIn">
+                Your Feedback Matters &ndash; DXN South Asia Regional Manufacturing Summit 2026
               </h2>
             </div>
 
-            <div className="gold-divider max-w-xs mx-auto animate-fadeIn" />
+            <div className="space-y-5 text-sm sm:text-base">
+              <p>Dear Delegates,</p>
+              <p>
+                Thank you for being a valued participant in the DXN South Asia Regional Manufacturing Summit 2026.
+                We sincerely appreciate your presence, active participation, and valuable contributions to the success
+                of this landmark regional event at our Siddipet flagship facility.
+              </p>
+              <p>
+                To help us continuously improve future manufacturing summits, organic Ganoderma cultivation showcases,
+                and regional biotechnology collaborations, we kindly request you to take 3&ndash;5 minutes to complete
+                our comprehensive feedback form.
+              </p>
 
-            <p className="text-lg max-w-xl mx-auto leading-relaxed font-light animate-fadeIn" style={{ color: 'rgba(184,176,160,0.8)' }}>
-              Your time is valuable. We have streamlined our feedback process to ensure sharing your insights is effortless and takes under 60 seconds.
-            </p>
+              <div className="text-center py-5 animate-fadeUp">
+                <button
+                  onClick={() => handleNext(false)}
+                  className="btn-gold px-8 py-3 rounded-full text-sm sm:text-base tracking-wide font-semibold inline-flex items-center gap-2 hover:scale-105 transition-transform shadow-luxury"
+                >
+                  <span className="text-xl">👉</span> Click Here to Complete the Feedback Form
+                </button>
+              </div>
 
-            <div className="animate-fadeUp">
-              <button
-                onClick={() => handleNext(false)}
-                className="btn-gold px-8 py-3 rounded-full text-sm tracking-widest uppercase flex items-center gap-2 mx-auto"
-              >
-                Begin Feedback
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </button>
+              <p>Your insights will play a critical role in evaluating:</p>
+              <ul className="list-disc pl-6 space-y-2 text-silver/90">
+                <li><strong className="text-champagne">Overall Summit Experience &amp; Strategic Alignment</strong></li>
+                <li><strong className="text-champagne">Technical Sessions, Presentation Quality &amp; Operational Insights</strong></li>
+                <li><strong className="text-champagne">Factory Visits &amp; Manufacturing Excellence Showcases</strong></li>
+                <li><strong className="text-champagne">Hospitality, Accommodation &amp; Venue Standard</strong></li>
+                <li><strong className="text-champagne">Transportation, Security &amp; Logistics Precision</strong></li>
+                <li><strong className="text-champagne">Event Coordination &amp; Administrative Flow</strong></li>
+                <li><strong className="text-champagne">Catering, Food &amp; Refreshments</strong> (including our specialized Kombucha and probiotic wellness lines)</li>
+                <li><strong className="text-champagne">Pre-event Communication &amp; Registration Compliance</strong></li>
+                <li><strong className="text-champagne">Strategic Suggestions for Future Regional Manufacturing Summits</strong></li>
+              </ul>
+
+              <p className="pt-4">
+                Your professional opinions and recommendations are highly valued and will play an important role in
+                enhancing future DXN regional manufacturing events and sustaining our global quality standards.
+              </p>
+              <p>Thank you once again for your participation and continued support.</p>
+
+              <p className="font-bold text-gold text-center text-lg sm:text-xl my-6 tracking-widest uppercase">
+                One World &bull; One Market &bull; One Mind
+              </p>
+
+              <div className="space-y-1 border-t border-white/8 pt-4">
+                <p>Warm Regards,</p>
+                <p><strong className="text-champagne">Organising Committee</strong> DXN South Asia Regional Manufacturing Summit 2026</p>
+                <p>DXN Manufacturing India Private Limited Siddipet, Telangana, India</p>
+                <p className="italic text-silver/60 pt-1">
+                  Contact: <a href="mailto:ts_info@dxn2u.co.in" className="hover:text-gold transition-colors">ts_info@dxn2u.co.in</a>
+                </p>
+              </div>
             </div>
           </div>
         );
 
-      // ── Guest Information ────────────────────────────────────────────────
+      // ── Step 1: Section A — Delegate Information ──────────────────────────
       case 1:
         return (
           <div className="space-y-8 animate-fadeIn">
-            <div className="rounded-xl p-6 bg-gradient-to-r from-gold/15 to-midnight-900/60 border border-gold/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            {/* Header */}
+            <div className="rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"
+              style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.12), rgba(5,150,105,0.08))', border: '1px solid rgba(212,175,55,0.22)' }}>
               <div className="flex items-center gap-4">
                 <span className="text-4xl">🪪</span>
                 <div>
-                  <span className="section-badge mb-2 inline-flex">Step 1 of 2</span>
-                  <h2 className="font-display text-3xl font-semibold text-champagne">Guest Details</h2>
+                  <h2 className="font-display text-2xl font-semibold text-champagne">Delegate Information</h2>
+                  <p className="text-xs text-silver/60 mt-0.5">Optional &amp; Confidential</p>
                 </div>
               </div>
               <button
                 onClick={() => handleNext(true)}
                 className="btn-outline-gold px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap tracking-wide"
               >
-                Skip & Remain Anonymous
+                Skip &amp; Remain Anonymous
               </button>
             </div>
 
-            <div className="space-y-6">
+            <p className="text-xs text-silver/50 italic -mt-4">
+              * All fields are optional. Your identity will be kept strictly confidential and used only for corporate quality management.
+            </p>
+
+            <div className="space-y-5">
+              {/* Name */}
               <div className="space-y-2">
                 <label className="block text-xs font-semibold tracking-widest uppercase text-silver/70">
-                  Full Name <span className="text-gold">*</span>
+                  Full Name
                 </label>
-                <input
-                  type="text"
-                  className="luxury-input"
-                  value={guestInfo.name}
-                  onChange={(e) => setGuestInfo({ ...guestInfo, name: e.target.value })}
-                  placeholder="e.g. Ahmad bin Razak"
-                />
+                <input type="text" className="luxury-input" value={guestInfo.name}
+                  onChange={e => setGuestInfo({ ...guestInfo, name: e.target.value })}
+                  placeholder="e.g. Ahmad bin Razak" />
               </div>
 
+              {/* Designation */}
               <div className="space-y-2">
                 <label className="block text-xs font-semibold tracking-widest uppercase text-silver/70">
-                  Country <span className="text-gold">*</span>
+                  Designation / Role
                 </label>
-                <input
-                  type="text"
-                  className="luxury-input"
-                  value={guestInfo.country}
-                  onChange={(e) => setGuestInfo({ ...guestInfo, country: e.target.value })}
-                  placeholder="e.g. Malaysia"
-                />
+                <input type="text" className="luxury-input" value={guestInfo.designation}
+                  onChange={e => setGuestInfo({ ...guestInfo, designation: e.target.value })}
+                  placeholder="e.g. Country Head / Regional Manager" />
               </div>
 
+              {/* Country */}
               <div className="space-y-2">
                 <label className="block text-xs font-semibold tracking-widest uppercase text-silver/70">
-                  Designation / Title <span className="text-gold">*</span>
+                  Country / Region Represented
                 </label>
-                <input
-                  type="text"
-                  className="luxury-input"
-                  value={guestInfo.designation}
-                  onChange={(e) => setGuestInfo({ ...guestInfo, designation: e.target.value })}
-                  placeholder="e.g. Country Head"
-                />
+                <input type="text" className="luxury-input" value={guestInfo.country}
+                  onChange={e => setGuestInfo({ ...guestInfo, country: e.target.value })}
+                  placeholder="e.g. Malaysia" />
+              </div>
+
+              {/* Email */}
+              <div className="space-y-2">
+                <label className="block text-xs font-semibold tracking-widest uppercase text-silver/70">
+                  Email Address
+                </label>
+                <input type="email" className="luxury-input" value={guestInfo.email}
+                  onChange={e => setGuestInfo({ ...guestInfo, email: e.target.value })}
+                  placeholder="e.g. delegate@example.com" />
               </div>
             </div>
           </div>
         );
 
-      // ── Single Scroll Ratings ──────────────────────────────────────────────────
-      case 2: {
-        const sections = [
-          { key: 'registrationReception', aspects: REGISTRATION_ASPECTS },
-          { key: 'accommodation', aspects: ACCOMMODATION_ASPECTS },
-          { key: 'roomNo', aspects: ROOM_NO_ASPECTS },
-          { key: 'galaDinner', aspects: GALA_DINNER_ASPECTS },
-          { key: 'culturalProgram', aspects: CULTURAL_PROGRAM_ASPECTS },
-          { key: 'eventManagement', aspects: EVENT_MANAGEMENT_ASPECTS },
-          { key: 'factoryVisit', aspects: FACTORY_VISIT_ASPECTS },
-          { key: 'venue', aspects: VENUE_ASPECTS },
-          { key: 'transportation', aspects: TRANSPORTATION_ASPECTS },
-          { key: 'HouseKeeping', aspects: HOUSEKEEPING_ASPECTS },
-          { key: 'Food', aspects: FOOD_ASPECTS },
-          { key: 'products', aspects: PRODUCTS_ASPECTS },
-        ];
-
+      // ── Step 2: Section B — Core Evaluation ──────────────────────────────
+      case 2:
         return (
-          <div className="space-y-8 animate-fadeIn">
-            <div className="rounded-xl p-6 bg-gradient-to-r from-gold/15 to-midnight-900/60 border border-gold/20 sticky top-4 z-10 backdrop-blur-md">
-              <div className="flex items-center gap-4">
-                <span className="text-4xl">✨</span>
-                <div>
-                  <span className="section-badge mb-1 inline-flex">Step 2 of 2</span>
-                  <h2 className="font-display text-2xl font-semibold text-champagne leading-tight">Executive Ratings</h2>
-                </div>
+          <div className="space-y-6 animate-fadeIn">
+            {/* Sticky header */}
+            <div className="rounded-xl p-5 sticky top-4 z-10 backdrop-blur-md flex items-center gap-4"
+              style={{ background: 'rgba(22,22,22,0.92)', border: '1px solid rgba(212,175,55,0.22)' }}>
+              <span className="text-3xl">⭐</span>
+              <div>
+                <h2 className="font-display text-xl font-semibold text-champagne">Core Evaluation Categories</h2>
+                <p className="text-xs text-silver/55 mt-0.5">Rate each aspect on a scale of 1 (Poor) to 5 (Excellent)</p>
               </div>
             </div>
 
-            <p className="text-sm text-silver/80 italic text-center mb-4">
-              Tap a star to rate. The page will auto-scroll to the next section.
-            </p>
-
-            {/* Dynamic Event Categories */}
-            {sections.map((section, index) => {
+            {/* Category cards */}
+            {sections.map((section, sIdx) => {
               const meta = sectionMeta[section.key];
               return (
                 <div
                   key={section.key}
-                  ref={el => { sectionRefs.current[index] = el; }}
-                  className={`rating-card flex flex-col md:flex-row md:items-center justify-between gap-5 opacity-0 animate-fadeIn`}
-                  style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'forwards' }}
+                  ref={el => { sectionRefs.current[sIdx] = el; }}
+                  className="luxury-card p-5 opacity-0 animate-fadeIn"
+                  style={{ animationDelay: `${sIdx * 0.06}s`, animationFillMode: 'forwards' }}
                 >
-                  <div className="flex items-center gap-3">
+                  {/* Category header */}
+                  <div className="flex items-start gap-3 mb-4 pb-3 border-b border-white/8">
                     <span className="text-2xl">{meta.icon}</span>
-                    <span className="text-base font-semibold text-champagne">{meta.label}</span>
+                    <div>
+                      <h3 className="text-base font-bold text-champagne leading-tight">{meta.label}</h3>
+                    </div>
                   </div>
-                  {/* Since aspects only has one item now ('Overall Experience') */}
-                  <RatingStars
-                    value={ratings[section.key]?.[section.aspects[0]] || 0}
-                    onChange={(val) => handleRatingChange(section.key, section.aspects[0], val, index)}
-                  />
+
+                  {/* Aspect rows */}
+                  {section.aspects.map((aspect, aIdx) => (
+                    <AspectRow
+                      key={aspect}
+                      aspect={aspect}
+                      value={ratings[section.key]?.[aspect] || 0}
+                      onChange={val => handleRatingChange(section.key, aspect, val)}
+                      index={aIdx}
+                    />
+                  ))}
                 </div>
               );
             })}
 
-            {/* Overall Experience & Final Thoughts */}
-            <div
-              ref={el => { sectionRefs.current[12] = el; }}
-              className="mt-12 pt-8 border-t border-gold/20 space-y-8 opacity-0 animate-fadeIn"
-              style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}
-            >
-              <h3 className="font-display text-3xl font-semibold text-champagne text-center mb-6">Final Thoughts</h3>
-
-              <div className="luxury-card p-6 flex flex-col md:flex-row items-center justify-between gap-6 border-gold/40">
-                <div className="text-center md:text-left">
-                  <p className="text-lg font-bold text-champagne">
-                    Your <span className="text-gold">Overall Experience</span> <span className="text-gold">*</span>
-                  </p>
-                  <p className="text-xs text-silver/60 mt-1">How was the Summit overall?</p>
-                </div>
-                <RatingStars large value={overallExperience} onChange={(val) => {
-                  setOverallExperience(val);
-                  setTimeout(() => {
-                    sectionRefs.current[9]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  }, 400);
-                }} />
+            {/* Overall Experience */}
+            <div className="luxury-card p-6 text-center space-y-4 opacity-0 animate-fadeIn"
+              style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
+              <h3 className="font-display text-xl font-semibold text-champagne">
+                Your <span className="gold-text">Overall Experience</span> <span className="text-gold">*</span>
+              </h3>
+              <p className="text-xs text-silver/55">How would you rate the Summit overall?</p>
+              <div className="flex justify-center">
+                <RatingStars large value={overallExperience} onChange={setOverallExperience} />
               </div>
+            </div>
 
-              <div ref={el => { sectionRefs.current[9] = el; }} className="rating-card space-y-4">
-                <p className="text-base font-semibold text-champagne/90 text-center">Would you recommend this event to peers?</p>
-                <div className="flex gap-3 max-w-sm mx-auto">
-                  <button
-                    type="button"
-                    onClick={() => setRecommendToOthers(true)}
-                    className={`flex-1 py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all border ${recommendToOthers
-                      ? 'bg-gold/15 border-gold/60 text-gold shadow-gold'
-                      : 'border-midnight-700 text-silver/60 hover:border-midnight-600 bg-midnight-900/40'
-                      }`}
-                  >
-                    ✓ Yes, Absolutely
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setRecommendToOthers(false)}
-                    className={`flex-1 py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all border ${!recommendToOthers
-                      ? 'bg-gold/15 border-gold/60 text-gold shadow-gold'
-                      : 'border-midnight-700 text-silver/60 hover:border-midnight-600 bg-midnight-900/40'
-                      }`}
-                  >
-                    Not This Time
-                  </button>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-xs font-semibold tracking-widest uppercase text-silver/70 text-center">
-                  Additional Comments (Optional)
-                </label>
-                <textarea
-                  className="luxury-input resize-none h-32"
-                  value={suggestions}
-                  onChange={(e) => setSuggestions(e.target.value)}
-                  placeholder="Share any final thoughts..."
-                />
+            {/* Recommend */}
+            <div className="rating-card space-y-3">
+              <p className="text-sm font-semibold text-champagne/90 text-center">
+                Would you recommend this event to peers &amp; colleagues?
+              </p>
+              <div className="flex gap-3 max-w-sm mx-auto">
+                <button type="button" onClick={() => setRecommendToOthers(true)}
+                  className={`flex-1 py-3 rounded-xl font-semibold text-sm tracking-wide transition-all border ${recommendToOthers
+                    ? 'border-gold/60 text-gold bg-gold/12'
+                    : 'border-white/10 text-silver/55 hover:border-white/20 bg-transparent'}`}>
+                  ✓ Yes, Absolutely
+                </button>
+                <button type="button" onClick={() => setRecommendToOthers(false)}
+                  className={`flex-1 py-3 rounded-xl font-semibold text-sm tracking-wide transition-all border ${!recommendToOthers
+                    ? 'border-gold/60 text-gold bg-gold/12'
+                    : 'border-white/10 text-silver/55 hover:border-white/20 bg-transparent'}`}>
+                  Not This Time
+                </button>
               </div>
             </div>
           </div>
         );
-      }
+
+      // ── Step 3: Section C — Qualitative Feedback ─────────────────────────
+      case 3:
+        return (
+          <div className="space-y-8 animate-fadeIn">
+            {/* Header */}
+            <div className="rounded-xl p-5"
+              style={{ background: 'linear-gradient(135deg, rgba(5,150,105,0.12), rgba(212,175,55,0.08))', border: '1px solid rgba(5,150,105,0.28)' }}>
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">💬</span>
+                <div>
+                  <h2 className="font-display text-xl font-semibold text-champagne">Qualitative Feedback &amp; Future Directions</h2>
+                  <p className="text-xs text-silver/55 mt-0.5">Your written insights help us shape future summits</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Q1 */}
+            <div className="space-y-3 opacity-0 animate-fadeIn" style={{ animationDelay: '0.05s', animationFillMode: 'forwards' }}>
+              <label className="block text-sm font-semibold text-champagne">
+                1. What was the most valuable aspect or key takeaway of this Manufacturing Summit for you?
+              </label>
+              <textarea
+                className="luxury-input resize-none h-28"
+                value={mostValuableAspect}
+                onChange={e => setMostValuableAspect(e.target.value)}
+                placeholder="Share your key takeaway..."
+              />
+            </div>
+
+            {/* Q2 */}
+            <div className="space-y-3 opacity-0 animate-fadeIn" style={{ animationDelay: '0.10s', animationFillMode: 'forwards' }}>
+              <label className="block text-sm font-semibold text-champagne">
+                2. Which technical session, presentation, or facility area did you find most impactful, and why?
+              </label>
+              <textarea
+                className="luxury-input resize-none h-28"
+                value={mostImpactfulSession}
+                onChange={e => setMostImpactfulSession(e.target.value)}
+                placeholder="Describe the session or area and why it stood out..."
+              />
+            </div>
+
+            {/* Q3 */}
+            <div className="space-y-3 opacity-0 animate-fadeIn" style={{ animationDelay: '0.15s', animationFillMode: 'forwards' }}>
+              <label className="block text-sm font-semibold text-champagne">
+                3. Please share any specific suggestions to improve operations, logistics, or content for future DXN Regional Manufacturing Summits:
+              </label>
+              <textarea
+                className="luxury-input resize-none h-28"
+                value={suggestionsForImprovement}
+                onChange={e => setSuggestionsForImprovement(e.target.value)}
+                placeholder="Your suggestions for improvement..."
+              />
+            </div>
+
+            {/* Q4 */}
+            <div className="space-y-3 opacity-0 animate-fadeIn" style={{ animationDelay: '0.20s', animationFillMode: 'forwards' }}>
+              <label className="block text-sm font-semibold text-champagne">
+                4. What specific topics, global certifications, or manufacturing innovations would you like to see featured in the next regional summit?
+              </label>
+              <textarea
+                className="luxury-input resize-none h-28"
+                value={futureTopics}
+                onChange={e => setFutureTopics(e.target.value)}
+                placeholder="Topics, certifications, or innovations you'd like to see..."
+              />
+            </div>
+
+            {/* Administrative Note */}
+            <div className="rounded-xl p-5 opacity-0 animate-fadeIn"
+              style={{ animationDelay: '0.25s', animationFillMode: 'forwards', background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)' }}>
+              <p className="text-xs font-bold text-gold mb-2 tracking-widest uppercase">Administrative Note</p>
+              <p className="text-xs text-silver/70 leading-relaxed">
+                <strong className="text-silver/90">Submission Instructions:</strong> Please submit the completed digital form by clicking <strong className="text-champagne">Submit</strong>.
+                All data collected is strictly utilised for corporate quality management and operational compliance refinement.
+              </p>
+              <p className="text-xs text-silver/55 mt-2 italic">Thank you for your dedication to our shared vision of manufacturing excellence.</p>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -540,13 +614,16 @@ const FeedbackForm: React.FC = () => {
       <div className="min-h-screen py-10 px-4 md:px-8 w-full flex items-center justify-center">
         <div className="max-w-3xl w-full mx-auto space-y-6">
 
-
-          {step > 0 && <StepIndicator currentStep={step} />}
+          {step > 0 && <StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />}
 
           <div className="luxury-card p-6 md:p-10 relative overflow-hidden shadow-luxury">
             <div
-              className="pointer-events-none absolute -top-20 -right-20 w-60 h-60 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.07) 0%, transparent 70%)' }}
+              className="pointer-events-none absolute -top-24 -right-24 w-64 h-64 rounded-full"
+              style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.09) 0%, rgba(5,150,105,0.05) 50%, transparent 70%)' }}
+            />
+            <div
+              className="pointer-events-none absolute -bottom-24 -left-24 w-64 h-64 rounded-full"
+              style={{ background: 'radial-gradient(circle, rgba(5,120,87,0.07) 0%, transparent 70%)' }}
             />
 
             {error && (
@@ -561,7 +638,7 @@ const FeedbackForm: React.FC = () => {
             {renderStep()}
 
             {step > 0 && (
-              <div className="mt-10 pt-6 border-t border-gold/10 flex justify-between items-center">
+              <div className="mt-10 pt-6 border-t border-white/8 flex justify-between items-center">
                 <button
                   onClick={handleBack}
                   className="btn-outline-gold px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2"
@@ -572,7 +649,7 @@ const FeedbackForm: React.FC = () => {
                   Back
                 </button>
 
-                {step < 2 ? (
+                {step < TOTAL_STEPS ? (
                   <button
                     onClick={() => handleNext(false)}
                     className="btn-gold px-8 py-2.5 rounded-xl text-sm tracking-wide flex items-center gap-2"
@@ -609,7 +686,8 @@ const FeedbackForm: React.FC = () => {
               </div>
             )}
           </div>
-          <p className="text-center text-xs text-silver/60 font-medium tracking-wider pb-6">
+
+          <p className="text-center text-xs text-silver/50 font-medium tracking-wider pb-6">
             © 2026 DXN International · Confidential Feedback Portal
           </p>
         </div>

@@ -139,20 +139,17 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ feedback, onClose, isAdmi
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2">
                 {[
-                  { label: 'Registration & Reception', emoji: '🏷️', data: feedback.registrationReception },
-                  { label: 'Accommodation', emoji: '🏨', data: feedback.accommodation },
-                  { label: 'Room No', emoji: '🚪', data: feedback.roomNo },
-                  { label: 'Gala Dinner', emoji: '🍽️', data: feedback.galaDinner },
-                  { label: 'Cultural Program', emoji: '🎭', data: feedback.culturalProgram },
-                  { label: 'Event Management', emoji: '📋', data: feedback.eventManagement },
-                  { label: 'Factory Visit', emoji: '🏭', data: feedback.factoryVisit },
-                  { label: 'Venue', emoji: '🏛️', data: feedback.venue },
+                  { label: 'Overall Summit', emoji: '🌐', data: feedback.overallSummitExperience },
+                  { label: 'Technical Sessions', emoji: '🏭', data: feedback.technicalSessions },
+                  { label: 'Factory Visits', emoji: '🌿', data: feedback.factoryVisits },
+                  { label: 'Hospitality', emoji: '🏨', data: feedback.hospitality },
                   { label: 'Transportation', emoji: '🚌', data: feedback.transportation },
-                  { label: 'HouseKeeping', emoji: '🛏️', data: feedback.HouseKeeping },
-                  { label: 'Food', emoji: '🍛', data: feedback.Food },
-                  { label: 'Products', emoji: '🛍️', data: feedback.products }
+                  { label: 'Food & Refreshments', emoji: '🍛', data: feedback.foodRefreshments },
+                  { label: 'Event Administration', emoji: '📋', data: feedback.eventAdministration }
                 ].map(cat => {
-                  const rating = cat.data ? Object.values(cat.data)[0] : 0;
+                  const ratings = cat.data ? Object.values(cat.data) : [];
+                  const sum = ratings.reduce((a, b) => a + b, 0);
+                  const rating = ratings.length > 0 ? Math.round(sum / ratings.length) : 0;
                   return (
                     <div key={cat.label} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(212,175,55,0.07)' }}>
                       <span className="text-sm flex items-center gap-2 font-medium" style={{ color: 'rgba(184,176,160,0.9)' }}>
@@ -166,15 +163,28 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ feedback, onClose, isAdmi
             </div>
           </div>
 
-          {/* Suggestions */}
-          <div className="rounded-2xl p-5" style={{ background: 'rgba(17,29,68,0.6)', border: '1px solid rgba(212,175,55,0.12)' }}>
+          {/* Qualitative Feedback */}
+          <div className="rounded-2xl p-5 space-y-4" style={{ background: 'rgba(17,29,68,0.6)', border: '1px solid rgba(212,175,55,0.12)' }}>
             <h4 className="text-xs font-bold uppercase tracking-widest gold-text flex items-center gap-2 mb-3">
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#d4af37' }} />
-              Additional Comments
+              Qualitative Feedback
             </h4>
-            <p className="text-sm italic leading-relaxed" style={{ color: 'rgba(184,176,160,0.7)', background: 'rgba(6,9,21,0.5)', padding: '1rem', borderRadius: '0.75rem', border: '1px solid rgba(212,175,55,0.08)' }}>
-              {feedback.suggestions || 'No additional comments provided.'}
-            </p>
+            
+            <div className="space-y-4">
+              {[
+                { q: 'Most Valuable Aspect', a: feedback.mostValuableAspect },
+                { q: 'Most Impactful Session', a: feedback.mostImpactfulSession },
+                { q: 'Suggestions for Improvement', a: feedback.suggestionsForImprovement },
+                { q: 'Future Topics/Innovations', a: feedback.futureTopics }
+              ].map(item => (
+                <div key={item.q}>
+                  <p className="text-xs font-bold text-champagne mb-1">{item.q}</p>
+                  <p className="text-sm italic leading-relaxed" style={{ color: 'rgba(184,176,160,0.7)', background: 'rgba(6,9,21,0.5)', padding: '0.75rem 1rem', borderRadius: '0.75rem', border: '1px solid rgba(212,175,55,0.08)' }}>
+                    {item.a || 'No response provided.'}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -252,16 +262,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ role, onLogout }) => {
     if (feedbacks.length === 0) return null;
 
     const categories = [
-      { name: 'Registration', key: 'registrationReception' },
-      { name: 'Accommodation', key: 'accommodation' },
-      { name: 'Gala Dinner', key: 'galaDinner' },
-      { name: 'Cultural', key: 'culturalProgram' },
-      { name: 'Event Mgmt', key: 'eventManagement' },
-      { name: 'Factory', key: 'factoryVisit' },
-      { name: 'Venue', key: 'venue' },
+      { name: 'Overall', key: 'overallSummitExperience' },
+      { name: 'Technical', key: 'technicalSessions' },
+      { name: 'Factory', key: 'factoryVisits' },
+      { name: 'Hospitality', key: 'hospitality' },
       { name: 'Transport', key: 'transportation' },
-      { name: 'HouseKeeping', key: 'HouseKeeping' },
-      { name: 'Food', key: 'Food' },
+      { name: 'Food', key: 'foodRefreshments' },
+      { name: 'Admin', key: 'eventAdministration' },
     ] as const;
 
     const categoryPerformance = categories.map(cat => {
@@ -315,9 +322,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ role, onLogout }) => {
       Name: f.guestInfo.name,
       Country: f.guestInfo.country,
       Designation: f.guestInfo.designation,
+      Email: f.guestInfo.email,
       'Overall Experience': f.overallExperience,
       'Recommend': f.recommendToOthers ? 'Yes' : 'No',
-      Suggestions: f.suggestions
+      'Most Valuable Aspect': f.mostValuableAspect,
+      'Most Impactful Session': f.mostImpactfulSession,
+      'Suggestions': f.suggestionsForImprovement,
+      'Future Topics': f.futureTopics
     }));
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();

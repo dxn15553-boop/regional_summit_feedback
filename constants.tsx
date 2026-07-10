@@ -13,19 +13,46 @@ import {
   X as Close
 } from 'lucide-react';
 
-export const REGISTRATION_ASPECTS = ['Overall Experience'];
-export const ACCOMMODATION_ASPECTS = ['Overall Experience'];
-export const ROOM_NO_ASPECTS = ['Overall Experience'];
-export const GALA_DINNER_ASPECTS = ['Overall Experience'];
-export const CULTURAL_PROGRAM_ASPECTS = ['Overall Experience'];
-export const EVENT_MANAGEMENT_ASPECTS = ['Overall Experience'];
-export const FACTORY_VISIT_ASPECTS = ['Overall Experience'];
-export const VENUE_ASPECTS = ['Overall Experience'];
-export const TRANSPORTATION_ASPECTS = ['Overall Experience'];
-export const HOUSEKEEPING_ASPECTS = ['Overall Experience'];
-export const FOOD_ASPECTS = ['Overall Experience'];
-export const PRODUCTS_ASPECTS = ['Overall Experience'];
+// ── Section B: Core Evaluation Aspects ──────────────────────────────────────
 
+export const OVERALL_SUMMIT_ASPECTS = [
+  'Alignment with DXN "One World, One Market" philosophy',
+  'Value of networking and regional collaboration opportunities',
+  'Overall structure and timing of the summit agenda',
+];
+
+export const TECHNICAL_SESSIONS_ASPECTS = [
+  'Relevance of manufacturing topics to regional growth',
+  'Knowledge and delivery of the speakers/presenters',
+  'Actionable takeaways regarding technology and compliance',
+];
+
+export const FACTORY_VISIT_ASPECTS = [
+  'Organization and safety standards during the facility tour',
+  'Insightfulness of organic Ganoderma cultivation & production insights',
+  'Showcase of sustainability, Kombucha, and probiotic operations',
+];
+
+export const HOSPITALITY_ASPECTS = [
+  'Quality and comfort of the designated accommodation',
+  'Helpfulness and responsiveness of hospitality staff',
+];
+
+export const TRANSPORTATION_ASPECTS = [
+  'Efficiency of airport transfers and daily summit shuttles',
+  'Punctuality and coordination of transit schedules',
+];
+
+export const FOOD_ASPECTS = [
+  'Quality, hygiene, and variety of meals provided',
+  'Incorporation of DXN health, beverage, and wellness concepts',
+];
+
+export const EVENT_ADMIN_ASPECTS = [
+  'Ease of the pre-summit registration process',
+  'Clarity of pre-event information briefs and updates',
+  'On-site assistance from the Administration desk',
+];
 
 export const RATING_OPTIONS = [
   { label: 'Excellent', value: 5 },

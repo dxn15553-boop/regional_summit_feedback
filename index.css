@@ -4,180 +4,282 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Global Keyframes (must be at root level for inline style animations) ── */
-@keyframes aurora {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
-}
+/* ══════════════════════════════════════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════════════════════════════════════ */
 
+@keyframes aurora {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  100% { background-position:  200% 0; }
 }
-
 @keyframes fadeUp {
   0%   { opacity: 0; transform: translateY(30px); }
   100% { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeIn {
   0%   { opacity: 0; transform: translateY(12px); }
   100% { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes slideInRight {
   0%   { opacity: 0; transform: translateX(-20px); }
   100% { opacity: 1; transform: translateX(0); }
 }
-
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-8px); }
 }
-
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
-  50%       { box-shadow: 0 0 35px rgba(212, 175, 55, 0.6); }
-}
-
-@keyframes starPulse {
-  0%   { transform: scale(1);    filter: drop-shadow(0 0 4px rgba(212,175,55,0.4)); }
-  50%  { transform: scale(1.25); filter: drop-shadow(0 0 12px rgba(212,175,55,0.9)); }
-  100% { transform: scale(1);    filter: drop-shadow(0 0 4px rgba(212,175,55,0.4)); }
-}
-
 @keyframes ripple {
   0%   { transform: scale(0.8); opacity: 1; }
   100% { transform: scale(2.4); opacity: 0; }
 }
-
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   25%       { transform: translateX(-6px); }
   75%       { transform: translateX(6px); }
 }
+@keyframes gradientShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
 
-/* ── Base ───────────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════
+   BASE - PROFESSIONAL ROYAL THEME
+   ─────────────────────────────────────────────────────────────────────
+   Focus on deep navy blues and subtle golds. Pink is used as a 
+   subtle elegant wash and highlight to keep it corporate and high-end.
+══════════════════════════════════════════════════════════════════════ */
+
 @layer base {
   body {
     font-family: 'Inter', sans-serif;
-    @apply bg-midnight-950;
-    color: #f5f0e8;
-    background-color: #060915;
+    color: #f0ede8;
+    background-color: #03050c; /* Extremely dark navy, almost black */
   }
 
   h1, h2, h3, .font-display {
     font-family: 'Cormorant Garamond', Georgia, serif;
   }
 
-  /* Premium custom scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: #0d1526; }
-  ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.6); }
+  ::-webkit-scrollbar       { width: 6px; }
+  ::-webkit-scrollbar-track { background: #03050c; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(29,78,216,0.3), rgba(212,175,55,0.4));
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(29,78,216,0.5), rgba(212,175,55,0.6));
+  }
 }
 
-/* ── Components ─────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════
+   COMPONENTS
+══════════════════════════════════════════════════════════════════════ */
+
 @layer components {
 
-  /* Aurora animated background */
+  /* ── Aurora background — Professional tri-color (Blue, faint Pink, Dark Navy) ───────── */
   .aurora-bg {
     background: linear-gradient(
       -45deg,
-      #060915,
-      #0d1526,
-      #111d44,
-      #0d1526,
-      #06121f
+      #03050c,
+      #070a14,
+      #1e0b16, /* Light touch of deep royal pink */
+      #050812,
+      #03050c
     );
-    background-size: 400% 400%;
-    animation: aurora 12s ease infinite;
+    background-size: 300% 300%;
+    animation: aurora 25s ease infinite;
+    position: relative;
+    min-height: 100vh;
   }
 
-  /* Premium glass card */
+  /* Top-left: Very faint royal blue & hint of pink */
+  .aurora-bg::before {
+    content: '';
+    pointer-events: none;
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 800px; height: 800px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center,
+      rgba(29, 78, 216, 0.08) 0%,
+      rgba(225, 29, 72, 0.06) 40%,
+      transparent 70%);
+    z-index: 0;
+  }
+
+  /* Bottom-right: Very faint gold */
+  .aurora-bg::after {
+    content: '';
+    pointer-events: none;
+    position: fixed;
+    bottom: -150px; right: -150px;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center,
+      rgba(212, 175, 55, 0.04) 0%,
+      rgba(212, 175, 55, 0.01) 40%,
+      transparent 70%);
+    z-index: 0;
+  }
+
+  /* ── Luxury card — Elegant, clean dark surface ── */
   .luxury-card {
-    background: linear-gradient(135deg, rgba(17,29,68,0.85) 0%, rgba(13,21,38,0.92) 100%);
-    border: 1px solid rgba(212, 175, 55, 0.18);
+    background: linear-gradient(
+      150deg,
+      rgba(10, 14, 25, 0.95) 0%,    
+      rgba(7, 10, 18, 0.98) 50%,    
+      rgba(4, 6, 12, 0.99) 100%
+    );
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.08);
+    box-shadow:
+      0 2px  0   rgba(212,175,55, 0.08),   
+      0 20px 50px rgba(0,   0,   0, 0.60),
+      inset 0 1px 0 rgba(255,255,255, 0.03);
     border-radius: 1.25rem;
   }
 
-  /* Gold text gradient */
+  /* Professional subtle gold, pink, & blue border */
+  .luxury-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1.25rem;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(212, 175, 55, 0.40) 0%,
+      rgba(225, 29, 72, 0.20) 40%,
+      rgba(29, 78, 216, 0.35) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .luxury-card > * { position: relative; z-index: 1; }
+
+  /* ── Gold text gradient - Clean metallic ─────────────────────────── */
   .gold-text {
-    background: linear-gradient(135deg, #b8941f 0%, #d4af37 40%, #ecbc2d 70%, #d4af37 100%);
+    background: linear-gradient(
+      135deg,
+      #cda231  0%,
+      #f0c93a 50%,
+      #cda231 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Shimmer button */
+  /* ── CTA button — Professional gold with royal pink hint ─────────── */
   .btn-gold {
-    background: linear-gradient(135deg, #b8941f 0%, #d4af37 50%, #ecbc2d 100%);
-    color: #060915;
-    font-weight: 700;
+    background: linear-gradient(
+      135deg,
+      #b8860b 0%,
+      #d4af37 35%,
+      #b02a5c 75%, /* Subtle royal pink touch */
+      #b8860b 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+    color: #03050c;
+    font-weight: 600;
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
+    letter-spacing: 0.03em;
   }
 
   .btn-gold::after {
     content: '';
     position: absolute;
     top: 0; left: -100%;
-    width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-    animation: shimmer 2.5s infinite;
+    width: 50%; height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.25),
+      transparent
+    );
+    animation: shimmer 4s infinite;
   }
 
   .btn-gold:hover {
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.5), 0 8px 25px rgba(0,0,0,0.3);
-    transform: translateY(-2px);
+    box-shadow:
+      0 0 20px rgba(212,175,55, 0.30),
+      0 5px 15px rgba(0,0,0, 0.40);
+    transform: translateY(-1px);
   }
 
+  /* ── Outlined blue/pink/gold button ──────────────────────────────── */
   .btn-outline-gold {
-    border: 1px solid rgba(212, 175, 55, 0.5);
-    color: rgba(212, 175, 55, 0.85);
-    background: rgba(212, 175, 55, 0.05);
-    transition: all 0.3s ease;
+    border: 1px solid rgba(212,175,55,0.30);
+    color: rgba(212,175,55,0.90);
+    background: rgba(10, 14, 25, 0.5);
+    transition: all 0.25s ease;
     cursor: pointer;
   }
 
   .btn-outline-gold:hover {
-    border-color: #d4af37;
-    background: rgba(212, 175, 55, 0.12);
-    color: #d4af37;
+    border-color: rgba(212,175,55,0.80);
+    background: linear-gradient(
+      135deg,
+      rgba(212,175,55, 0.08) 0%,
+      rgba(225, 29, 72, 0.05) 100%
+    );
+    color: #f0c93a;
   }
 
-  /* Luxury input */
+  /* ── Luxury input — Clean, visible, corporate ───────────────────── */
   .luxury-input {
-    background: rgba(13, 21, 38, 0.7);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    color: #f5f0e8;
-    transition: all 0.3s ease;
-    border-radius: 0.75rem;
+    background: rgba(6, 9, 16, 0.8);
+    border: 1px solid rgba(29, 78, 216, 0.25);
+    color: #f0ede8;
+    transition: all 0.25s ease;
+    border-radius: 0.5rem;
     padding: 0.875rem 1.25rem;
     width: 100%;
     outline: none;
   }
 
-  .luxury-input::placeholder { color: rgba(184, 176, 160, 0.35); }
+  .luxury-input::placeholder { color: rgba(200,195,185,0.35); }
 
   .luxury-input:focus {
-    border-color: rgba(212, 175, 55, 0.65);
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1), 0 0 20px rgba(212, 175, 55, 0.08);
-    background: rgba(17, 29, 68, 0.8);
+    border-color: rgba(212,175,55,0.60);
+    box-shadow: 0 0 0 3px rgba(212,175,55, 0.08);
+    background: rgba(8, 12, 22, 0.95);
   }
 
-  /* Gold divider */
+  /* ── Clean divider ──────────────────────────────────────────────── */
   .gold-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212,175,55, 0.40),
+      rgba(225, 29, 72, 0.25),
+      rgba(29, 78, 216, 0.30),
+      transparent
+    );
   }
 
-  /* Section badge */
+  /* ── Section badge ───────────────────────────────────────────────── */
   .section-badge {
     display: inline-flex;
     align-items: center;
@@ -187,65 +289,66 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: #d4af37;
-    border: 1px solid rgba(212,175,55,0.3);
-    background: rgba(212,175,55,0.08);
+    border: 1px solid rgba(212,175,55,0.25);
+    background: rgba(212,175,55, 0.04);
     padding: 0.25rem 0.75rem;
     border-radius: 100px;
   }
 
-  /* Step indicator dots */
-  .step-dot {
-    width: 2rem; height: 2rem;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; font-weight: 700;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-  }
-
-  .step-dot.active {
-    background: linear-gradient(135deg, #b8941f, #d4af37);
-    color: #060915;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-  }
-
-  .step-dot.completed {
-    background: rgba(212, 175, 55, 0.2);
-    border: 1px solid rgba(212, 175, 55, 0.5);
-    color: #d4af37;
-  }
-
-  .step-dot.upcoming {
-    background: rgba(17, 29, 68, 0.8);
-    border: 1px solid rgba(212, 175, 55, 0.1);
-    color: rgba(184, 176, 160, 0.4);
-  }
-
-  /* Rating card */
+  /* ── Rating card — Professional dark surface ─────────────────────── */
   .rating-card {
-    background: rgba(13, 21, 38, 0.6);
-    border: 1px solid rgba(212, 175, 55, 0.12);
-    border-radius: 1rem;
+    background: rgba(10, 14, 25, 0.6);
+    border: 1px solid rgba(29, 78, 216, 0.15);
+    border-radius: 0.75rem;
     padding: 1.25rem 1.5rem;
     transition: all 0.25s ease;
+    position: relative;
+  }
+
+  .rating-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(29, 78, 216, 0.3),
+      transparent
+    );
   }
 
   .rating-card:hover {
-    border-color: rgba(212, 175, 55, 0.3);
-    background: rgba(17, 29, 68, 0.7);
+    border-color: rgba(212,175,55,0.30);
+    background: rgba(12, 16, 30, 0.8);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
   }
 
-  /* Glow text */
+  /* ── Subtle text glow ────────────────────────────────────────────── */
   .glow-gold {
-    text-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 0 0 60px rgba(212, 175, 55, 0.3);
+    text-shadow: 0 0 15px rgba(212,175,55, 0.30);
   }
 
-  /* Utility animation classes */
-  .animate-fadeIn  { animation: fadeIn  0.6s ease-out forwards; }
-  .animate-fadeUp  { animation: fadeUp  0.7s ease-out forwards; }
-  .animate-float   { animation: float   4s ease-in-out infinite; }
-  .animate-shimmer { animation: shimmer 2.5s linear infinite; }
-  .animate-ripple  { animation: ripple  1s ease-out forwards; }
-  .animate-shake   { animation: shake   0.25s ease-in-out 0s 2; }
-  .animate-glowPulse { animation: glowPulse 2s ease-in-out infinite; }
+  /* ── Shadow luxury ───────────────────────────────────────────────── */
+  .shadow-luxury {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.50);
+  }
+
+  /* ── Progress bar: clean corporate blue to pink to gold ─────────── */
+  .progress-bar-fill {
+    background: linear-gradient(
+      90deg,
+      #1d4ed8  0%,
+      #b02a5c 50%,
+      #d4af37 100%
+    );
+    box-shadow: 0 0 12px rgba(225, 29, 72, 0.20), 0 0 10px rgba(212,175, 55, 0.20);
+  }
+
+  /* ── Utility animation classes ───────────────────────────────────── */
+  .animate-fadeIn    { animation: fadeIn      0.6s ease-out forwards; }
+  .animate-fadeUp    { animation: fadeUp      0.7s ease-out forwards; }
+  .animate-float     { animation: float       4s ease-in-out infinite; }
+  .animate-shimmer   { animation: shimmer     2.5s linear infinite; }
+  .animate-ripple    { animation: ripple      1s ease-out forwards; }
 }

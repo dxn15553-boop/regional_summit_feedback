@@ -31,7 +31,7 @@ export const aiService = {
     if (!ai) return "AI Insights unavailable: Missing API Key.";
 
     const feedbackSummary = feedbacks
-      .map(f => `- Guest ${f.guestInfo.name}: ${f.suggestions} (Overall: ${f.overallExperience})`)
+      .map(f => `- Guest ${f.guestInfo.name}: "${f.mostValuableAspect}" | Suggestions: "${f.suggestionsForImprovement}" (Overall: ${f.overallExperience})`)
       .join('\n');
 
     try {
