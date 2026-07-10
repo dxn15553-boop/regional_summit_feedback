@@ -172,8 +172,7 @@ const AspectRow: React.FC<{
   index: number;
 }> = ({ aspect, value, onChange, index }) => (
   <div
-    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-4 border-b border-white/5 last:border-0 opacity-0 animate-fadeIn"
-    style={{ animationDelay: `${index * 0.04}s`, animationFillMode: 'forwards' }}
+    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-4 border-b border-white/5 last:border-0"
   >
     <p className="text-sm text-silver/90 leading-snug flex-1 pr-4">{aspect}</p>
     <RatingStars value={value} onChange={onChange} />
@@ -463,8 +462,7 @@ const FeedbackForm: React.FC = () => {
                 <div
                   key={section.key}
                   ref={el => { sectionRefs.current[sIdx] = el; }}
-                  className="luxury-card p-5 opacity-0 animate-fadeIn"
-                  style={{ animationDelay: `${sIdx * 0.06}s`, animationFillMode: 'forwards' }}
+                  className="luxury-card p-5"
                 >
                   {/* Category header */}
                   <div className="flex items-start gap-3 mb-4 pb-3 border-b border-white/8">
@@ -489,8 +487,7 @@ const FeedbackForm: React.FC = () => {
             })}
 
             {/* Overall Experience */}
-            <div className="luxury-card p-6 text-center space-y-4 opacity-0 animate-fadeIn"
-              style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
+            <div className="luxury-card p-6 text-center space-y-4">
               <h3 className="font-display text-xl font-semibold text-champagne">
                 Your <span className="gold-text">Overall Experience</span> <span className="text-gold">*</span>
               </h3>
@@ -540,7 +537,7 @@ const FeedbackForm: React.FC = () => {
             </div>
 
             {/* Q1 */}
-            <div className="space-y-3 opacity-0 animate-fadeIn" style={{ animationDelay: '0.05s', animationFillMode: 'forwards' }}>
+            <div className="space-y-3">
               <label className="block text-sm font-semibold text-champagne">
                 1. What was the most valuable aspect or key takeaway of this Manufacturing Summit for you?
               </label>
@@ -553,7 +550,7 @@ const FeedbackForm: React.FC = () => {
             </div>
 
             {/* Q2 */}
-            <div className="space-y-3 opacity-0 animate-fadeIn" style={{ animationDelay: '0.10s', animationFillMode: 'forwards' }}>
+            <div className="space-y-3">
               <label className="block text-sm font-semibold text-champagne">
                 2. Which technical session, presentation, or facility area did you find most impactful, and why?
               </label>
@@ -566,7 +563,7 @@ const FeedbackForm: React.FC = () => {
             </div>
 
             {/* Q3 */}
-            <div className="space-y-3 opacity-0 animate-fadeIn" style={{ animationDelay: '0.15s', animationFillMode: 'forwards' }}>
+            <div className="space-y-3">
               <label className="block text-sm font-semibold text-champagne">
                 3. Please share any specific suggestions to improve operations, logistics, or content for future DXN Regional Manufacturing Summits:
               </label>
@@ -579,7 +576,7 @@ const FeedbackForm: React.FC = () => {
             </div>
 
             {/* Q4 */}
-            <div className="space-y-3 opacity-0 animate-fadeIn" style={{ animationDelay: '0.20s', animationFillMode: 'forwards' }}>
+            <div className="space-y-3">
               <label className="block text-sm font-semibold text-champagne">
                 4. What specific topics, global certifications, or manufacturing innovations would you like to see featured in the next regional summit?
               </label>
@@ -592,8 +589,8 @@ const FeedbackForm: React.FC = () => {
             </div>
 
             {/* Administrative Note */}
-            <div className="rounded-xl p-5 opacity-0 animate-fadeIn"
-              style={{ animationDelay: '0.25s', animationFillMode: 'forwards', background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)' }}>
+            <div className="rounded-xl p-5"
+              style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)' }}>
               <p className="text-xs font-bold text-gold mb-2 tracking-widest uppercase">Administrative Note</p>
               <p className="text-xs text-silver/70 leading-relaxed">
                 <strong className="text-silver/90">Submission Instructions:</strong> Please submit the completed digital form by clicking <strong className="text-champagne">Submit</strong>.
