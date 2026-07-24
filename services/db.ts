@@ -61,20 +61,20 @@ export const dbService = {
   },
 
   async saveFeedback(data: FeedbackData): Promise<void> {
-    if (!this.isUsingCloud()) {
-      return this.saveLocally(data);
+    if (!supabase) {
+      throw new Error("Unable to submit your request because the application is currently offline.");
     }
 
     try {
-      const { error } = await supabase!
+      const { error } = await supabase
         .from(TABLE_NAME)
         .insert([data]);
 
       if (error) throw error;
     } catch (err) {
-      console.warn("Cloud save failed, falling back to local storage:", err);
-      isCloudActive = false; // Disable cloud for subsequent calls
-      return this.saveLocally(data);
+      console.warn("Cloud save failed:", err);
+      isCloudActive = false;
+      throw new Error("Unable to submit your request because the server is currently unavailable.");
     }
   },
 

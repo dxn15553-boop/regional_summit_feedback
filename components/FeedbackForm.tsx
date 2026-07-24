@@ -252,30 +252,41 @@ const FeedbackForm: React.FC = () => {
     setIsSubmitting(true);
     setError('');
 
-    const feedback: FeedbackData = {
-      id: crypto.randomUUID(),
-      timestamp: new Date().toISOString(),
-      guestInfo,
-      overallSummitExperience: ratings.overallSummitExperience,
-      technicalSessions: ratings.technicalSessions,
-      factoryVisits: ratings.factoryVisits,
-      hospitality: ratings.hospitality,
-      transportation: ratings.transportation,
-      foodRefreshments: ratings.foodRefreshments,
-      eventAdministration: ratings.eventAdministration,
-      overallExperience,
-      recommendToOthers,
-      mostValuableAspect,
-      mostImpactfulSession,
-      suggestionsForImprovement,
-      futureTopics,
-    };
-
     try {
+      // Verify backend is reachable before submitting
+      const connectionTest = await dbService.testConnection();
+      if (!connectionTest.success) {
+        setError('The server is currently unavailable. Please try again in a few minutes.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const feedback: FeedbackData = {
+        id: crypto.randomUUID(),
+        timestamp: new Date().toISOString(),
+        guestInfo,
+        overallSummitExperience: ratings.overallSummitExperience,
+        technicalSessions: ratings.technicalSessions,
+        factoryVisits: ratings.factoryVisits,
+        hospitality: ratings.hospitality,
+        transportation: ratings.transportation,
+        foodRefreshments: ratings.foodRefreshments,
+        eventAdministration: ratings.eventAdministration,
+        overallExperience,
+        recommendToOthers,
+        mostValuableAspect,
+        mostImpactfulSession,
+        suggestionsForImprovement,
+        futureTopics,
+      };
+
       await dbService.saveFeedback(feedback);
       setIsSuccess(true);
     } catch (err: any) {
-      setError(`Submission failed: ${err.message || 'Please try again.'}`);
+      // If the error message already contains our custom error text, show it directly.
+      // Otherwise prepend with 'Submission failed:'
+      const msg = err.message || 'Please try again.';
+      setError(msg.includes('currently unavailable') || msg.includes('offline') ? msg : `Submission failed: ${msg}`);
       console.error(err);
     } finally {
       setIsSubmitting(false);
